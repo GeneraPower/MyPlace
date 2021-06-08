@@ -124,41 +124,94 @@
             <div class="gridContent" id="content">
             </div>
 
-
-            <dialog id = "DialogWindow">
-                <button id = "DialogClose" class = "btn btnClose" style = "float: right"><i class="fas fa-times" style = "font-size: 25px;"></i></button>
-                <div id = "news_editor">
-                    <p id="dialogtitle">Вікно для додання новини</p>
-                    <div style="min-width: 500px; display: flex; flex-direction: column; ">
-                        <label id = "news_id">ID новини:</label>
-                        <label id = "news_house">Дом:</label>
-                        <label id = "news_porch">Під`їзд:</label>
-                        <label> Заголовок новини </label>
-                        <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
-                        <label> Текст новини </label>
-                        <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+            <!-- Modal -->
+            <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dialogTitle">Вікно для додання новини</h5>
+                            <button type="button" class="close" onclick='CloseDialogWindow()' aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id = "ModalBody">
+                            <div id = "news_editor" style="min-width: 500px; display: flex; flex-direction: column; ">
+                                <label id = "news_id">ID новини:</label>
+                                <label id = "news_house">Дом:</label>
+                                <label id = "news_porch">Під`їзд:</label>
+                                <label> Заголовок новини </label>
+                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
+                                <label> Текст новини </label>
+                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="news_close" onclick='CloseDialogWindow()'>Закрити</button>
+                            <button type="button" class="btn btn-primary" id="news_save" onclick = "SaveChanges()">Зберігти</button>
+                        </div>
                     </div>
-                    <button id="news_close" onclick = CloseDialogWindow('DialogWindow')>Закрыть</button>
-                    <button id="news_save" onclick = "SaveChanges()">Сохранить</button>
                 </div>
-            </dialog>
+            </div> <!-- Modal close -->
+
         </main>
     </div>
 </div>
 
+<!-- Reauired by Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <script>
-    function CloseDialogWindow(WindowId)
-    {
-        var dialog = document.getElementById(WindowId);
-        dialog.close();
+
+    // При закрытии модального окна
+    $('#NewsModalWindow').on('hidden.bs.modal', function (e) {
+        // Возвращаем елементы модального окна в исходное состояние
+        ClearNewsEditor();
+
+        if(document.getElementById('houseContainer0') !== null){
+            DeleteElement('houseContainer0');
+        }
+        if(document.getElementById('porchContainer0') !== null) {
+            DeleteElement('porchContainer0');
+        }
+    });
+
+    function CloseDialogWindow() {
+        $("#NewsModalWindow").modal('hide');
     }
-    function ShowDialogWindow(WindowId)
+
+    function ShowDialogWindow()
     {
-        var dialog = document.getElementById(WindowId);
-        dialog.showModal();
+        $("#NewsModalWindow").modal('show');
+    }
+
+    function ClearNewsEditor() {
+
+        document.getElementById('dialogTitle').innerHTML = "Вікно для додання новини";
+        document.getElementById("news_id").innerHTML = "";
+        document.getElementById("news_house").innerHTML = "";
+        document.getElementById("news_porch").innerHTML = "";
+
+        var newsTitle = document.getElementById("news_title");
+        newsTitle.value = "";
+        newsTitle.placeholder = "Заголовок";
+
+        var newsBody = document.getElementById("news_body");
+        newsBody.value = "";
+        newsBody.placeholder = "Текст";
+
+        //Запрос на добавление новости
+        document.getElementById('news_save').onclick = function () {
+            SaveChanges();
+        };
+
+        document.getElementById("news_id").hidden = false;
+        document.getElementById('news_editor').hidden = false;
     }
 </script>
 <script>
@@ -167,9 +220,9 @@
     {
 
         localStorage.removeItem('houseKeeperToken');
-        localStorage.removeItem('CreateNewshouse_id');
+        localStorage.removeItem('CreateNewsHouse_id');
         localStorage.removeItem('CreateNewsHouseName');
-        localStorage.removeItem('CreateNewsporch_id');
+        localStorage.removeItem('CreateNewsPorch_id');
         localStorage.removeItem('CreateNewsPorchName');
 
         document.location.href = "index.html";
@@ -181,40 +234,36 @@
     function Start()
     {
         GetNews();
-        FillNews();
-        //SelectHouses();
     }
 
     function OpenDialog() {
         GetHouses();
-        ShowDialogWindow('DialogWindow');
+        ShowDialogWindow();
     }
 
     //Добавляем выбор домов в диалоговом окне
     function SelectHouses()
     {
         //Заполняем объект houses
-        console.log(housesData);
+        console.log("Данные для SelectHouses(): " + housesData);
 
         //Скрываем елементы для добавления новости
         document.getElementById('news_editor').hidden = true;
 
-        dialog = document.getElementById('DialogWindow');
+        modal = document.getElementById('ModalBody');
 
         // добавляем область для домов
         var houseContainer = document.createElement("div");
-        houseContainer.style.minHeight = "200px";
-        houseContainer.style.width = "800px";
+        houseContainer.className = "container-fluid p-0 m-0";
         houseContainer.id = "houseContainer0";
 
-        dialog.appendChild(houseContainer);
+        modal.appendChild(houseContainer);
 
         //добавляем надпись
-        var houseContainertitle = document.createElement("h3");
-        houseContainertitle.innerHTML = "Оберіть необхідний будинок:";
-        houseContainer.appendChild(houseContainertitle);
+        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний будинок:";
 
         //добавляем дома
+        // k == idДома
         for(var k in housesData.houses)
         {
             var houseElement = document.createElement("div");
@@ -228,7 +277,7 @@
             houseElement.name = k;
             houseElement.onclick = function()
             {
-                localStorage.setItem("CreateNewshouse_id", this.name);
+                localStorage.setItem("CreateNewsHouse_id", this.name);
                 localStorage.setItem("CreateNewsHouseName", this.children[0].innerHTML);
                 DeleteElement(houseElement.parentElement.id);
                 GetPorches(this.name);
@@ -237,19 +286,11 @@
             var houseName = document.createElement("h4");
             houseName.style.textAlign = "left";
             houseName.style.paddingTop = (parseInt(houseElement.style.height) / 3 ) + "px";
-
             houseName.style.alignSelf = "center";
             houseName.innerHTML = housesData.houses[k].house_number;
 
             houseElement.appendChild(houseName);
-            houseContainer.appendChild( houseElement);
-
-            //обновляем кнупку закрытия
-            document.getElementById('DialogClose').onclick = function()
-            {
-                DeleteElement(houseElement.parentElement.id);
-                CloseDialogWindow('DialogWindow');
-            }
+            houseContainer.appendChild(houseElement);
         }
     }
 
@@ -269,20 +310,17 @@
 
     function SelectPorches()
     {
-        dialog = document.getElementById('DialogWindow');
+        modal = document.getElementById('ModalBody');
 
-        // добавляем область для домов
+        // добавляем область для подъездов
         var porchContainer = document.createElement("div");
-        porchContainer.style.minHeight = "200px";
-        porchContainer.style.width = "800px";
+        porchContainer.className = "container-fluid p-0 m-0";
         porchContainer.id = "porchContainer0";
 
-        dialog.appendChild(porchContainer);
+        modal.appendChild(porchContainer);
 
         //добавляем надпись
-        var porchContainertitle = document.createElement("h3");
-        porchContainertitle.innerHTML = "Оберіть необхідний під`їзд";
-        porchContainer.appendChild(porchContainertitle);
+        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний під`їзд";
 
         //добавляем кнопку для создания новости
         var porchCreateButton = document.createElement("button");
@@ -297,21 +335,20 @@
         };
         porchContainer.appendChild(porchCreateButton);
 
-        //добавляем дома
-        //заменить k на news_id
+        //добавляем подъезды
+        //k == News_id
         for(var k in porchesData.porches)
-        //for(let k = 0; k < 10; k++)
         {
             var porchElement = document.createElement("div");
             porchElement.style.height = "100px";
-            porchElement.style.width = "795px";
+            porchElement.style.maxWidth = "795px";
             porchElement.style.outline = "2px solid #000";
             porchElement.style.backgroundColor = "rgba(255,198,98,0.73)";
             porchElement.id = "porchElement" + k;
             porchElement.name = k;
             porchElement.onclick = function()
             {
-                localStorage.setItem("CreateNewsporch_id", this.name);
+                localStorage.setItem("CreateNewsPorch_id", this.name);
                 localStorage.setItem("CreateNewsPorchName", this.children[0].innerHTML);
                 DeleteElement(porchContainer.id);
                 ShowNewsEditor();
@@ -320,39 +357,30 @@
             var porchName = document.createElement("h4");
             porchName.style.textAlign = "left";
             porchName.style.paddingTop = (parseInt(porchElement.style.height) / 3 ) + "px";
-
             porchName.style.alignSelf = "center";
             porchName.innerHTML = porchesData.porches[k].porch_name;
 
             porchElement.appendChild(porchName);
             porchContainer.appendChild( porchElement);
-
-            //обновляем кнупку закрытия
-            document.getElementById('DialogClose').onclick = function()
-            {
-                DeleteElement(porchContainer.id);
-                CloseDialogWindow('DialogWindow');
-            }
         }
     }
 
     //Отображает в диалоговом окне поля для создания новости
     function ShowNewsEditor()
     {
-        document.getElementById('dialogtitle').innerHTML="Додавання новини";
+        document.getElementById('dialogTitle').innerHTML="Додавання новини";
         document.getElementById("news_id").hidden = true;
         document.getElementById("news_house").innerHTML = "Дом: " + localStorage.getItem("CreateNewsHouseName");
-        console.log(localStorage.getItem("CreateNewsPorchName") );
-        if(localStorage.getItem("CreateNewsPorchName") != "null") {
+        if(localStorage.getItem("CreateNewsPorchName") !== "null") {
             document.getElementById("news_porch").innerHTML = "Під`їзд: " + localStorage.getItem("CreateNewsPorchName");
         }
         else{
             document.getElementById("news_porch").innerHTML = "Новина для усього будинку";
         }
 
-        var newstitle = document.getElementById("news_title");
-        newstitle.value = "";
-        newstitle.placeholder = "Заголовок";
+        var newsTitle = document.getElementById("news_title");
+        newsTitle.value = "";
+        newsTitle.placeholder = "Заголовок";
 
         var newsBody = document.getElementById("news_body");
         newsBody.value = "";
@@ -360,27 +388,21 @@
 
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
-            console.log("show");
             const temp_body =
                 {
-                    house_id: parseInt(localStorage.getItem("CreateNewshouse_id")),
+                    house_id: parseInt(localStorage.getItem("CreateNewsHouse_id")),
                     title: document.getElementById("news_title").value,
                     text: document.getElementById("news_body").value
                 };
-            if(localStorage.getItem("CreateNewsPorchName") != "null")
+            if(localStorage.getItem("CreateNewsPorchName") !== "null")
             {
-                temp_body.porch_id = parseInt(localStorage.getItem("CreateNewsporch_id"));
+                temp_body.porch_id = parseInt(localStorage.getItem("CreateNewsPorch_id"));
             }
             AddNews(temp_body);
-            CloseDialogWindow('DialogWindow');
+            CloseDialogWindow();
+
         };
         document.getElementById('news_editor').hidden = false;
-
-        //обновляем кнупку закрытия
-        document.getElementById('DialogClose').onclick = function()
-        {
-            CloseDialogWindow('DialogWindow');
-        }
     }
 
     function NewsTableHeader()
@@ -465,10 +487,25 @@
         document.getElementById("tableHeader").appendChild(parBlock);
     }
 
+    function DeleteChildren(ElementId)
+    {
+        var el = document.getElementById(ElementId);
+
+        var child = el.lastElementChild;
+        while(child)
+        {
+            el.removeChild(child);
+            child = el.lastElementChild;
+        }
+    }
+
     function FillNews(){
 
         //отображаем оглавление таблицы
         NewsTableHeader();
+
+        //Удаляем элементы при повторном отображении
+        DeleteChildren('content');
 
         let first = true;
         for(var key in data.news){
@@ -551,42 +588,42 @@
             pel4.style.fontFamily = "Century Gothic";
             pel5.style.fontFamily = "Century Gothic";
             pel6.style.fontFamily = "Century Gothic";
-            //pel5.innerHTML = "Змінити";
+
             pel5.innerHTML = "<i class='fas fa-pen-square' style = 'font-size: 28px;'></i>";
             pel5.className = "btn";
             pel5.id = "changeBut"+key;
             pel5.name = key;
 
-            pel5.onclick= function() {
-                //отображаем текущюю информацию о новости
-                var dialog = document.getElementById('DialogWindow');
-                dialog.showModal();
-                document.getElementById('news_id').innerHTML = "ID Новини:" + this.name;
-                document.getElementById('news_id').name = this.name;
-                document.getElementById('news_title').value=data.news[this.name]['title'];
-                document.getElementById('news_body').value=data.news[this.name]['text'];
-                document.getElementById('news_house').innerHTML="Дім: " + data.news[this.name]['house_id'];
-                document.getElementById('news_porch').innerHTML="Під'їзд: " + data.news[this.name]['porch_id'];
-                document.getElementById('dialogtitle').innerHTML="Зміна новини";
-                var newsId = this.name;
+            pel5.onclick= async function() {
+
+                let tempNewsId = this.name;
+                //Обновляем информацию о новостях
+                // По хорошему, тут нужно обновлять инфу только об одной новости (сейчас о всех доступных)
+                await GetNews();
+
+                document.getElementById('news_id').innerHTML = "ID Новини:" + tempNewsId;
+                document.getElementById('news_id').name = tempNewsId;
+                document.getElementById('news_title').value=data.news[tempNewsId]['title'];
+                document.getElementById('news_body').value=data.news[tempNewsId]['text'];
+                document.getElementById('news_house').innerHTML="Дім: " + data.news[tempNewsId]['house_id'];
+                document.getElementById('news_porch').innerHTML="Під'їзд: " + data.news[tempNewsId]['porch_id'];
+                document.getElementById('dialogTitle').innerHTML="Редагування новини";
+
                 // Функция для обновления новости при нажатии на кнопку Сохранить
-                document.getElementById('news_save').onclick = function(){
+                document.getElementById('news_save').onclick = async function(){
                     //Отправляем новые данные на сервер
                     const temp_body =
                         {
                             title: document.getElementById('news_title').value,
                             text: document.getElementById('news_body').value
                         };
-                    UpdateNews(newsId, temp_body);
+                    await UpdateNews(tempNewsId, temp_body);
 
-                    // Обновляем локальный json
-                    var id = document.getElementById('news_id').name;
-                    data.news[id]['title']=document.getElementById('news_title').value;
-                    data.news[id]['text']=document.getElementById('news_body').value;
-                    CloseDialogWindow('DialogWindow');
-                    document.getElementById('title'+id).innerHTML=data.news[id]['title'];
-                    document.getElementById('text'+id).innerHTML=data.news[id]['text'];
+                    CloseDialogWindow();
                 };
+
+                //отображаем текущюю информацию о новости
+                ShowDialogWindow();
             };
 
             pel6.className = "btn btnDel";
@@ -619,7 +656,7 @@
         }
     }
 
-    function GetNews()
+    async function GetNews()
     {
         const head =
             {
@@ -640,6 +677,7 @@
             .catch((error) => {
                 console.error('Error:', error);
             });
+        return true;
     }
 
     var housesData = {};
@@ -706,13 +744,16 @@
             .then(NewsData => {
                 console.log('Success:', NewsData);
                 console.log("deleted");
+                GetNews();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
 
-        delete data.news[newsId];
-        document.getElementById("parBlock"+newsId).remove();
+
+
+        //delete data.news[newsId];
+        //document.getElementById("parBlock"+newsId).remove();
 
     }
 
@@ -730,7 +771,10 @@
             .then(response => response.json())
             .then(NewsData => {
                 console.log('Success:', NewsData);
-                console.log("deleted");
+                console.log("updated");
+                // Обновляем локальный json
+                // с учетом возможности изменения id в бд
+                GetNews();
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -739,7 +783,6 @@
     }
 
     function AddNews(newsData) {
-        console.log(newsData)
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -753,10 +796,14 @@
             .then(response => response.json())
             .then(NewsData => {
                 console.log('Success:', NewsData);
+                console.log("NewsAdded");
+                GetNews();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
+
+
 
     }
 

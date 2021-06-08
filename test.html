@@ -72,7 +72,7 @@
             </button>
 
             <!-- Modal -->
-            <div  class="modal fade" id="DialogWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -82,15 +82,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div style="min-width: 500px; display: flex; flex-direction: column; ">
-                                <label id = "news_id">ID новини:</label>
-                                <label id = "news_house">Дом:</label>
-                                <label id = "news_porch">Під`їзд:</label>
-                                <label> Заголовок новини </label>
-                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
-                                <label> Текст новини </label>
-                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
-                            </div>
+                            ...
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -119,7 +111,7 @@
     $(".btnAdd").click(function() {
         //открыть модальное окно с id="myModal"
         document.getElementById('exampleModalLabel').innerHTML = "ХОРОШО";
-        $("#DialogWindow").modal('show');
+        $("#NewsModalWindow").modal('show');
     });
 </script>
 
