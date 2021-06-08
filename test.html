@@ -3,68 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 
+
 <body>
+<div class="container-fluid" >
+    <div class="row min-vh-100 flex-column flex-md-row">
+        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top">
+                <div class="collapse navbar-collapse aside_header__inner">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                        <li class="nav-item">
+                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Новини</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Події</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="#"><i class=" codeply fa-fw"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class=" codeply fa-fw"></i> <span class="text-danger d-none d-md-inline">Вихід</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
 
-    <div id = "goods">
 
+        <main class="col-12 col-md-10 bg-faded flex-grow-1 main-style" style="min-height: 3000px;">
+
+            <header class = "row bg-info pt-3 pb-3  sticky-top"  >
+                <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
+            </header>
+
+
+            <p  style = " min-height: 60px">
+            <h3 style = "text-align: center;">Перелік пов'язаних новин</h3>
+            </p>
+
+            <!--<h4 style = "display: flex; flex-direction: row-reverse; margin-right: 100px;">Додати новину</h4>-->
+            <div id = "addButtonArea" style = "margin-left: 20px;display: flex; flex-direction: row-reverse; justify-content: left; margin-bottom: -50px; margin-right: 12px;">
+                <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" style = "min-width: 300px; min-height: 60px;"><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
+            </div>
+
+            <div id = "tableHeader">
+            </div>
+            <div class="content" id="content" style="display: block;overflow-y: scroll;height:76%; margin-top: 2px; ">
+            </div>
+
+            <dialog id = "DialogWindow">
+                <button id = "DialogClose" class = "btn btnClose" style = "float: right"><i class="fas fa-times" style = "font-size: 25px;"></i></button>
+                <div id = "news_editor">
+                    <p id="dialogtitle">Вікно для додання новини</p>
+                    <div style="min-width: 500px; display: flex; flex-direction: column; ">
+                        <label id = "news_id">ID новини:</label>
+                        <label id = "news_house">Дом:</label>
+                        <label id = "news_porch">Під`їзд:</label>
+                        <label> Заголовок новини </label>
+                        <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
+                        <label> Текст новини </label>
+                        <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+                    </div>
+                    <button id="news_close" onclick = CloseDialogWindow('DialogWindow')>Закрыть</button>
+                    <button id="news_save" onclick = "SaveChanges()">Сохранить</button>
+                </div>
+            </dialog>
+        </main>
     </div>
+</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </body>
-<script>
-    $('document').ready(function () {
-       JsonTest();
-    });
 
-    function JsonTest() {
-            let data = {
-                                "1212" :{
-                                    "NewsID" : 1212,
-                                    "PorchID": 1111,
-                                    "HouseID" : 21,
-                                    "Title"  : "Тайтл",
-                                    "Text" : "Текст новости",
-                                    "CreationDate" : "21.05.2021",
-                                    "HouseKeeperID" : 6659,
-                                    "DateStart" :  "",
-                                    "DateEnd"  :   ""
-                            },
-                                "22222" :{
-                                    "NewsID" : 22222,
-                                    "PorchID": 1111,
-                                    "HouseID" : 21,
-                                    "Title"  : "Тайтл",
-                                    "Text" : "Текст новости",
-                                    "CreationDate" : "24.05.2021",
-                                    "HouseKeeperID" : 6659,
-                                    "DateStart" :  "",
-                                    "DateEnd"  :   ""
-                            },
-                                "32323" :{
-                                    "NewsID" : 32323,
-                                    "PorchID": 1111,
-                                    "HouseID" : 21,
-                                    "Title"  : "Тайтл",
-                                    "Text" : "Текст новости",
-                                    "CreationDate" : "28.05.2021",
-                                    "HouseKeeperID" : 6659,
-                                    "DateStart" :  "",
-                                    "DateEnd"  :   ""
-                            }
-            };
-
-                    var out = '';
-                    for(var key in data)
-                    {
-                        out += '<h3>News ID: ' + data[key]['NewsID'] + '</h3>';
-                    }
-                    $('#goods').html(out);
-
-
-            
-    }
-
-</script>
 </html>

@@ -49,35 +49,6 @@
         .btnClose:hover {
             background-color: #c47f72;
         }
-        .header {
-            width: 100%;
-            background-color: slategrey;
-            padding: 15px 0;
-            z-index: 100;
-            position: fixed;
-        }
-        .header__inner {
-
-        }
-        .header_fixed {
-
-            text-align: center;
-            top: 0;
-        }
-        .aside_header {
-            width: 50%;
-            padding: 15px 0;
-            z-index: 100;
-
-        }
-        .aside_header__inner {
-
-        }
-        .aside_header_fixed {
-            position: fixed;
-            width: 16%;
-
-        }
         dialog::backdrop {
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -89,7 +60,7 @@
 <div class="container-fluid" >
     <div class="row min-vh-100 flex-column flex-md-row">
         <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
-            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 aside_header ">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top ">
                 <div class="collapse navbar-collapse aside_header__inner">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li class="nav-item">
@@ -105,21 +76,21 @@
                             <a class="nav-link pl-0" href="#"><i class=" codeply fa-fw"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class=" codeply fa-fw"></i> <span class="d-none d-md-inline" style="color: #e66548">Вихід</span></a>
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class=" codeply fa-fw"></i> <span class="text-danger d-none d-md-inline">Вихід</span></a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </aside>
-        <main class="col bg-faded py-3 flex-grow-1" style = "margin: 0; padding: 0; margin-top: -16px;">
-            <header class = "header"  >
-                <div class = "header__inner" >
-                    <h3 style = "alignment: center; text-align: center;"> Панель домоуправлінця MyPlace </h3>
-                </div>
+
+
+        <main class="col-12 col-md-10 bg-faded flex-grow-1 p-0">
+
+            <header class = "row-fluid pt-3 pb-3  sticky-top" style="background-color: slategrey"  >
+                <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
             </header>
-            <p style = " min-height: 60px">
-            <h3 style = "text-align: center;">Перелік пов'язаних новин</h3>
-            </p>
+
+            <p><h3 class = "text-center">Перелік пов'язаних новин</h3></p>
 
             <!--<h4 style = "display: flex; flex-direction: row-reverse; margin-right: 100px;">Додати новину</h4>-->
             <div id = "addButtonArea" style = "margin-left: 20px;display: flex; flex-direction: row-reverse; justify-content: left; margin-bottom: -50px; margin-right: 12px;">
@@ -154,33 +125,7 @@
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(function() {
-        let header = $('.header');
 
-        $(window).scroll(function() {
-            if($(this).scrollTop() > 1) {
-                header.addClass('header_fixed');
-            } else {
-                header.removeClass('header_fixed');
-            }
-        });
-    });
-</script>
-<script>
-
-    $(function() {
-        let header = $('.aside_header');
-
-        $(window).scroll(function() {
-            if($(this).scrollTop() > 1) {
-                header.addClass('aside_header_fixed');
-            } else {
-                header.removeClass('aside_header_fixed');
-            }
-        });
-    });
-</script>
 <script>
     function CloseDialogWindow(WindowId)
     {
