@@ -35,6 +35,8 @@
         }
         .btnAdd {
             background-color: #b8e6a2;
+            min-width: 300px;
+            min-height: 60px;
         }
         .btnAdd:hover {
             background-color: #98c287;
@@ -49,34 +51,52 @@
         .btnClose:hover {
             background-color: #c47f72;
         }
+
         dialog::backdrop {
             background-color: rgba(0, 0, 0, 0.8);
         }
+
+        .addButtonArea
+        {
+            margin-left: 20px;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left;
+            margin-bottom: -50px;
+            margin-right: 12px;
+        }
+        .gridContent
+        {
+            display: block;overflow-y: scroll;
+            margin-top: 2px;
+            height: calc(100vh - 250px);
+        }
+
     </style>
 
 </head>
 <body onLoad="Start()">
 
-<div class="container-fluid" >
+<div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
         <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
             <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top ">
                 <div class="collapse navbar-collapse aside_header__inner">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li class="nav-item">
-                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Новини</span></a>
+                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Події</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class=" codeply fa-fw"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class=" codeply fa-fw"></i> <span class="text-danger d-none d-md-inline">Вихід</span></a>
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
                         </li>
                     </ul>
                 </div>
@@ -92,15 +112,18 @@
 
             <p><h3 class = "text-center">Перелік пов'язаних новин</h3></p>
 
-            <!--<h4 style = "display: flex; flex-direction: row-reverse; margin-right: 100px;">Додати новину</h4>-->
-            <div id = "addButtonArea" style = "margin-left: 20px;display: flex; flex-direction: row-reverse; justify-content: left; margin-bottom: -50px; margin-right: 12px;">
-            <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" style = "min-width: 300px; min-height: 60px;"><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
+            <div id = "addButtonArea" class = "addButtonArea">
+                <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" ><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
             </div>
 
+            <!-- МЕСТО ДЛЯ ЗАГОЛОВКА ТАБЛИЦЫ -->
             <div id = "tableHeader">
             </div>
-            <div class="content" id="content" style="display: block;overflow-y: scroll;height:76%; margin-top: 2px; ">
+
+            <!-- МЕСТО ДЛЯ СОДЕРЖИМОГО ТАБЛИЦЫ -->
+            <div class="gridContent" id="content">
             </div>
+
 
             <dialog id = "DialogWindow">
                 <button id = "DialogClose" class = "btn btnClose" style = "float: right"><i class="fas fa-times" style = "font-size: 25px;"></i></button>

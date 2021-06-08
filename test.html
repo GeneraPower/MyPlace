@@ -5,31 +5,35 @@
     <title>Title</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+
+
 </head>
 
 
 <body>
-<div class="container-fluid" >
+<div class="container-fluid">
     <div class="row min-vh-100 flex-column flex-md-row">
         <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
-            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top ">
                 <div class="collapse navbar-collapse aside_header__inner">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li class="nav-item">
-                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="fa fa-bullseye fa-fw"></i> <span class="font-weight-bold">Новини</span></a>
+                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fa fa-book fa-fw"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fa fa-cog fa-fw"></i> <span class="d-none d-md-inline">Події</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class=" codeply fa-fw"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class=" codeply fa-fw"></i> <span class="text-danger d-none d-md-inline">Вихід</span></a>
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
                         </li>
                     </ul>
                 </div>
@@ -37,47 +41,90 @@
         </aside>
 
 
-        <main class="col-12 col-md-10 bg-faded flex-grow-1 main-style" style="min-height: 3000px;">
 
-            <header class = "row bg-info pt-3 pb-3  sticky-top"  >
+        <main class="col-12 col-md-10 bg-faded flex-grow-1 p-0">
+
+            <header class = "row-fluid pt-3 pb-3  sticky-top" style="background-color: slategrey"  >
                 <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
             </header>
 
+            <p><h3 class = "text-center">Перелік пов'язаних новин</h3></p>
 
-            <p  style = " min-height: 60px">
-            <h3 style = "text-align: center;">Перелік пов'язаних новин</h3>
-            </p>
-
-            <!--<h4 style = "display: flex; flex-direction: row-reverse; margin-right: 100px;">Додати новину</h4>-->
-            <div id = "addButtonArea" style = "margin-left: 20px;display: flex; flex-direction: row-reverse; justify-content: left; margin-bottom: -50px; margin-right: 12px;">
-                <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" style = "min-width: 300px; min-height: 60px;"><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
+            <div id = "addButtonArea" class = "addButtonArea">
+                <button class = "btn btnAdd" id="show"  ><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
             </div>
 
+            <!-- МЕСТО ДЛЯ ЗАГОЛОВКА ТАБЛИЦЫ -->
             <div id = "tableHeader">
             </div>
-            <div class="content" id="content" style="display: block;overflow-y: scroll;height:76%; margin-top: 2px; ">
+
+            <!-- МЕСТО ДЛЯ СОДЕРЖИМОГО ТАБЛИЦЫ -->
+            <div class="gridContent" id="content">
             </div>
 
-            <dialog id = "DialogWindow">
-                <button id = "DialogClose" class = "btn btnClose" style = "float: right"><i class="fas fa-times" style = "font-size: 25px;"></i></button>
-                <div id = "news_editor">
-                    <p id="dialogtitle">Вікно для додання новини</p>
-                    <div style="min-width: 500px; display: flex; flex-direction: column; ">
-                        <label id = "news_id">ID новини:</label>
-                        <label id = "news_house">Дом:</label>
-                        <label id = "news_porch">Під`їзд:</label>
-                        <label> Заголовок новини </label>
-                        <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
-                        <label> Текст новини </label>
-                        <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+
+
+
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#DialogWindow">
+                Launch demo modal
+            </button>
+
+            <!-- Modal -->
+            <div  class="modal fade" id="DialogWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div style="min-width: 500px; display: flex; flex-direction: column; ">
+                                <label id = "news_id">ID новини:</label>
+                                <label id = "news_house">Дом:</label>
+                                <label id = "news_porch">Під`їзд:</label>
+                                <label> Заголовок новини </label>
+                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
+                                <label> Текст новини </label>
+                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
-                    <button id="news_close" onclick = CloseDialogWindow('DialogWindow')>Закрыть</button>
-                    <button id="news_save" onclick = "SaveChanges()">Сохранить</button>
                 </div>
-            </dialog>
+            </div>
+
+
+
+
+
         </main>
     </div>
 </div>
+
+<!-- Reauired by Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+<script>
+    //при нажатию на любую кнопку, имеющую класс .btnAdd
+    $(".btnAdd").click(function() {
+        //открыть модальное окно с id="myModal"
+        document.getElementById('exampleModalLabel').innerHTML = "ХОРОШО";
+        $("#DialogWindow").modal('show');
+    });
+</script>
+
+
+
 
 </body>
 
