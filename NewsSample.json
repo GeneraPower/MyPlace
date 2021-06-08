@@ -1,0 +1,35 @@
+{
+ "1212" :{
+    "NewsID" : 1212,
+    "PorchID": 1111,
+    "HouseID" : 21,
+    "Title"  : "Тайтл",
+    "Text" : "Текст новости",
+    "CreationDate" : "21.05.2021",
+    "HouseKeeperID" : 6659,
+    "DateStart" :  "",
+    "DateEnd"  :   ""
+},
+  "22222" :{
+    "NewsID" : 22222,
+    "PorchID": 1111,
+    "HouseID" : 21,
+    "Title"  : "Тайтл",
+    "Text" : "Текст новости",
+    "CreationDate" : "24.05.2021",
+    "HouseKeeperID" : 6659,
+    "DateStart" :  "",
+    "DateEnd"  :   ""
+  },
+  "32323" :{
+    "NewsID" : 32323,
+    "PorchID": 1111,
+    "HouseID" : 21,
+    "Title"  : "Тайтл",
+    "Text" : "Текст новости",
+    "CreationDate" : "28.05.2021",
+    "HouseKeeperID" : 6659,
+    "DateStart" :  "",
+    "DateEnd"  :   ""
+  }
+}

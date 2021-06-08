@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+</head>
+<body onload = Start()>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalTitle">Вхід до MyPlace</h5>
+
+        </div>
+        <div class="modal-body">
+        <form id="auth" action = "1.html" method = "post">
+            <div class="row mb-2">
+                <label for="InputEmail" class="col-sm-4 col-form-label">Введіть ваш Email</label>
+                <div class="col-sm-12">
+                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>
+                    <input type="email" class="form-control"  id="InputEmail" form="auth">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="InputPass" class="col-sm-5 col-form-label">Введіть ваш Пароль</label>
+                <div class="col-sm-12">
+                    <input type="password" class="form-control" id="InputPass" form="auth">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <input type="button" class="btn btn-success" value = "Відправити" onclick="SerlData()" >
+            </div>
+            <div id = "errorField">
+                <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Невірний логін або пароль</p>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+
+<script>
+
+    function Start()
+    {
+        document.getElementById('errorMessage').hidden = true;
+    }
+
+    function SerlData()
+    {
+        const emailStr = document.getElementById('InputEmail').value;
+        const regex = /@gmail.com$/;
+
+        if(emailStr.search(regex)!== -1) {
+            let data = {
+                email: emailStr,
+                password: document.getElementById('InputPass').value
+            };
+            let json = JSON.stringify(data);
+            fetch('https://prp-project-server.herokuapp.com/house-keeper-auth/sign-in', {
+                method: 'POST',
+                headers: {"Content-type": "application/json; charset=UTF-8"},
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    localStorage.setItem('houseKeeperToken', data.house_keeper_token);
+                    if(!data.error_message) {
+                        document.location.href = "2.html";
+                    }
+                    else{
+                        document.getElementById('errorMessage').hidden = false;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+        else
+            {
+                let label = document.getElementById('emailErr');
+                label.style.display = "block";
+                document.getElementById('emailErr').innerHTML = "Помилковий імейл. Приклад імейлу: polozov@gmail.com" ;
+            }
+    }
+</script>
+</html>
