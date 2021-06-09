@@ -781,36 +781,10 @@
             pel5.id = "changeBut"+key;
             pel5.name = key;
 
+            // Нажатие на кнопку "Редактировать"
             pel5.onclick= async function() {
-
-                let tempNewsId = this.name;
-                //Обновляем информацию о новостях
-                // По хорошему, тут нужно обновлять инфу только об одной новости (сейчас о всех доступных)
-                await GetNews();
-
-                document.getElementById('news_id').innerHTML = "ID Новини:" + tempNewsId;
-                document.getElementById('news_id').name = tempNewsId;
-                document.getElementById('news_title').value=data.news[tempNewsId]['title'];
-                document.getElementById('news_body').value=data.news[tempNewsId]['text'];
-                document.getElementById('news_house').innerHTML="Дім: " + data.news[tempNewsId]['house_id'];
-                document.getElementById('news_porch').innerHTML="Під'їзд: " + data.news[tempNewsId]['porch_id'];
-                document.getElementById('dialogTitle').innerHTML="Редагування новини";
-
-                // Функция для обновления новости при нажатии на кнопку Сохранить
-                document.getElementById('news_save').onclick = async function(){
-                    //Отправляем новые данные на сервер
-                    const temp_body =
-                        {
-                            title: document.getElementById('news_title').value,
-                            text: document.getElementById('news_body').value
-                        };
-                    await UpdateNews(tempNewsId, temp_body);
-
-                    CloseDialogWindow();
-                };
-
-                //отображаем текущюю информацию о новости
-                ShowDialogWindow();
+                //Получаем данные новости
+                await GetOneNews(this.name);
             };
 
             pel6.className = "btn btnDel";
@@ -843,6 +817,44 @@
         }
     }
 
+    function EditNews() {
+        console.log(oneNewsData.news.news_id);
+        console.log("^^^");
+
+        document.getElementById('news_id').innerHTML = "ID Новини:" + oneNewsData.news.news_id;
+        document.getElementById('news_id').name = oneNewsData.news.news_id;
+        document.getElementById('news_title').value = oneNewsData.news.title;
+        document.getElementById('news_body').value = oneNewsData.news.text;
+        document.getElementById('news_house').innerHTML = "Дім: " + oneNewsData.news.house_number;
+
+        document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
+        document.getElementById('dialogTitle').innerHTML = "Редагування новини";
+
+        // Функция для обновления новости при нажатии на кнопку Сохранить
+        document.getElementById('news_save').onclick = async function () {
+            //Отправляем новые данные на сервер
+            const temp_body =
+                {
+                    title: document.getElementById('news_title').value,
+                    text: document.getElementById('news_body').value
+                };
+            // Берем ссылки на картинки
+            var temp_obj = [];
+            divs = document.getElementById('carousel-body').children;
+            for (i = 0; i < divs.length; i++) {
+                temp_obj[i] = divs[i].children[0].src;
+            }
+            temp_body.images = temp_obj;
+
+            await UpdateNews(oneNewsData.news.news_id, temp_body);
+
+            CloseDialogWindow();
+        };
+
+        //отображаем текущюю информацию о новости
+        ShowDialogWindow();
+    }
+
     async function GetNews()
     {
         const head =
@@ -860,6 +872,31 @@
                 console.log('Success:', NewsData);
                 data = NewsData;
                 FillNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return true;
+    }
+
+    oneNewsData = {};
+    async function GetOneNews(news_id)
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/news/' + news_id, {
+            method: 'GET',
+            headers: head
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                oneNewsData  = NewsData;
+                EditNews();
             })
             .catch((error) => {
                 console.error('Error:', error);
