@@ -843,8 +843,13 @@
         document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
         document.getElementById('dialogTitle').innerHTML = "Редагування новини";
 
-        //ЗДЕСЬ НУЖНО ВЫЗЫВАТЬ МЕТОД addImageField(src)
-        console.log(oneNewsData.images.length);
+        //Учитываем картинки
+        if(oneNewsData.images !== null) {
+            for (let i = 0; i < oneNewsData.images.length; i++) {
+                AddImageField(oneNewsData.images[i]);
+            }
+            console.log(oneNewsData.images.length);
+        }
 
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
@@ -863,6 +868,8 @@
             }
             temp_body.images = temp_obj;
 
+            console.log("temmpmpmp");
+            console.log(temp_body);
             await UpdateNews(oneNewsData.news.news_id, temp_body);
 
             CloseDialogWindow();
