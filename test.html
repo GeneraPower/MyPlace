@@ -321,17 +321,8 @@
             }
         }
 
-        SetImage(img_div.id);
-
     }
 
-    function SetImage(imgDiv_id)
-    {
-        let curr = document.getElementById(imgDiv_id);
-        while(curr.className !== "carousel-item active" ) {
-            $('#carouselExampleControls').carousel('next');
-        }
-    }
 
 </script>
 
