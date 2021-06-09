@@ -185,8 +185,8 @@
 <!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
 <script>
 
-    let img_counter = 0;
-    function AddImageField() {
+    let img_counter = 0; // счётчик для уникальности полей id
+    function AddImageField(imgSource = "") {
         let canAdd = true;
 
         //проверяем заполненны ли предыдушие поля для картинок
@@ -229,7 +229,7 @@
             delete_butt.onclick = function()
             {
                 //alert(parseInt(this.id.substring(17)));
-              DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17)));
+              DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
             };
 
 
@@ -237,6 +237,19 @@
             t_div.appendChild(temp_inp);
             t_div.appendChild(delete_butt);
             news_body.appendChild(t_div);
+
+            //Используеться при обновлении уже созданных новостей
+            // imgSource --> ссылка на картинку
+            if(imgSource !== "")
+            {
+                //Вставляем ссылку и блокируем инпут
+                temp_inp.value = imgSource;
+                temp_inp.readOnly = true;
+                temp_inp.style.backgroundColor = "lightGrey";
+
+                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
+            }
+
         }
         img_counter+= 1;
     }
@@ -829,6 +842,10 @@
 
         document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
         document.getElementById('dialogTitle').innerHTML = "Редагування новини";
+
+        //ЗДЕСЬ НУЖНО ВЫЗЫВАТЬ МЕТОД addImageField(src)
+        console.log(oneNewsData.images.length);
+
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
