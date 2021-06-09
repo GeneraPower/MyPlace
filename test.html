@@ -321,9 +321,22 @@
             }
         }
 
+        SetActive(img_div.id);
     }
 
+    function SetActive(imgDiv_id){
 
+        var img_div = document.getElementById(imgDiv_id);
+        img_div.className = "carousel-item active";
+
+        divs = document.getElementById('carousel-body').children;
+        for (i = 0; i < divs.length; i++) {
+
+            if (divs[i].id !== imgDiv_id) {
+                divs[i].className = "carousel-item";
+            }
+        }
+    }
 </script>
 
 <script>
