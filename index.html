@@ -22,20 +22,24 @@
             <div class="row mb-2">
                 <label for="InputEmail" class="col-sm-4 col-form-label">Введіть ваш Email</label>
                 <div class="col-sm-12">
-                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>
-                    <input type="email" class="form-control"  id="InputEmail" form="auth">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Пошта" aria-label="Пошта" id="InputEmail" form="auth" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">@gmail.com</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row mb-2">
                 <label for="InputPass" class="col-sm-5 col-form-label">Введіть ваш Пароль</label>
                 <div class="col-sm-12">
-                    <input type="password" class="form-control" id="InputPass" form="auth">
+                    <input type="password" class="form-control" id="InputPass" form="auth" placeholder="Пароль">
                 </div>
             </div>
             <div class="row mb-3">
                 <input type="button" class="btn btn-success" value = "Відправити" onclick="SerlData()" >
             </div>
-            <div id = "errorField">
+            <div id = "errorField" class = "text-center mb-0 pb-0" >
                 <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Невірний логін або пароль</p>
             </div>
         </form>
@@ -54,14 +58,14 @@
     function SerlData()
     {
         const emailStr = document.getElementById('InputEmail').value;
-        const regex = /@gmail.com$/;
+        //const regex = /@gmail.com$/;
+        const regex = /^\D+[^\s@!*&%$#()]+$/;
 
         if(emailStr.search(regex)!== -1) {
             let data = {
-                email: emailStr,
+                email: emailStr + "@gmail.com",
                 password: document.getElementById('InputPass').value
             };
-            let json = JSON.stringify(data);
             fetch('https://prp-project-server.herokuapp.com/house-keeper-auth/sign-in', {
                 method: 'POST',
                 headers: {"Content-type": "application/json; charset=UTF-8"},
@@ -75,7 +79,9 @@
                         document.location.href = "2.html";
                     }
                     else{
-                        document.getElementById('errorMessage').hidden = false;
+                        err = document.getElementById('errorMessage');
+                        err.hidden = false;
+                        err.innerHTML = "Невірний логін або пароль" ;
                     }
                 })
                 .catch((error) => {
@@ -84,9 +90,9 @@
         }
         else
             {
-                let label = document.getElementById('emailErr');
-                label.style.display = "block";
-                document.getElementById('emailErr').innerHTML = "Помилковий імейл. Приклад імейлу: polozov@gmail.com" ;
+                err = document.getElementById('errorMessage');
+                err.hidden = false;
+                err.innerHTML = "Не вірний формат email. Введіть поштову адресу до символа @" ;
             }
     }
 </script>
