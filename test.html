@@ -408,13 +408,7 @@
 
     function Exit()
     {
-
-        localStorage.removeItem('houseKeeperToken');
-        localStorage.removeItem('CreateNewsHouse_id');
-        localStorage.removeItem('CreateNewsHouseName');
-        localStorage.removeItem('CreateNewsPorch_id');
-        localStorage.removeItem('CreateNewsPorchName');
-
+        localStorage.clear();
         document.location.href = "index.html";
     }
 
@@ -887,6 +881,7 @@
 
     async function GetNews()
     {
+
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -900,6 +895,15 @@
             .then(response => response.json())
             .then(NewsData => {
                 console.log('Success:', NewsData);
+
+
+                //Если закончилось время длительности токена
+                if("token is expired".indexOf(NewsData.error_message))
+                {
+                        alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
+                        Exit();
+                }
+
                 data = NewsData;
                 FillNews();
             })
