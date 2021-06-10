@@ -18,29 +18,32 @@
 
         </div>
         <div class="modal-body">
-        <form id="auth" method = "post">
-            <div class="row mb-2">
+        <form id="auth" action = "1.html" method = "post">
+            <div class="row mb-1">
                 <label for="InputEmail" class="col-sm-4 col-form-label">Введіть ваш Email</label>
                 <div class="col-sm-12">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Пошта" aria-label="Пошта" id="InputEmail" form="auth" aria-describedby="basic-addon2">
+                        
                         <div class="input-group-append">
                             <span class="input-group-text" id="basic-addon2">@gmail.com</span>
                         </div>
-                    </div>
+                    </div>  
+                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>                 
                 </div>
             </div>
             <div class="row mb-2">
                 <label for="InputPass" class="col-sm-5 col-form-label">Введіть ваш Пароль</label>
                 <div class="col-sm-12">
                     <input type="password" class="form-control" id="InputPass" form="auth" placeholder="Пароль">
+                    <label id = "passwordErr" class="col-sm-4 col-form-label" style = "display: none"></label>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <input type="button" class="btn btn-success" value = "Відправити" onclick="SerlData()" >
             </div>
             <div id = "errorField" class = "text-center mb-0 pb-0" >
-                <p id = "errorMessage" style="color: #e66548; alignment: center">Невірний логін або пароль</p>
+                <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Невірний логін або пароль</p>
             </div>
         </form>
     </div>
@@ -54,14 +57,16 @@
     {
         document.getElementById('errorMessage').hidden = true;
     }
-
     function SerlData()
     {
         const emailStr = document.getElementById('InputEmail').value;
-        //const regex = /@gmail.com$/;
+        const password = document.getElementById('InputPass').value;
         const regex = /^\D+[^\s@!*&%$#()]+$/;
-
-        if(emailStr.search(regex)!== -1) {
+        document.getElementById('emailErr').innerHTML = "" ;
+        document.getElementById('passwordErr').innerHTML = "" ;
+        if(emailStr.search(regex) !== -1 && password.length >= 8 && emailStr.length >= 6 && emailStr.length <= 30) { 
+            document.getElementById('emailErr').innerHTML = "" ;
+            document.getElementById('passwordErr').innerHTML = "" ;
             let data = {
                 email: emailStr + "@gmail.com",
                 password: document.getElementById('InputPass').value
@@ -79,21 +84,27 @@
                         document.location.href = "2.html";
                     }
                     else{
-                        err = document.getElementById('errorMessage');
-                        err.hidden = false;
-                        err.innerHTML = "Невірний логін або пароль" ;
+                        document.getElementById('errorMessage').hidden = false;
                     }
                 })
                 .catch((error) => {
                     console.error('Error:', error);
                 });
-        }
-        else
-            {
-                err = document.getElementById('errorMessage');
-                err.hidden = false;
-                err.innerHTML = "Не вірний формат email. Введіть поштову адресу до символа @" ;
             }
+        else if(emailStr.length < 6 || emailStr.length > 30)
+        {
+            let label = document.getElementById('emailErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('emailErr').innerHTML = "Довжина email від 6 до 30 символів" ;
+        }
+        else 
+        {
+            let label = document.getElementById('passwordErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('passwordErr').innerHTML = "Довжина паролю від 8 символів" ;
+        }
     }
 </script>
 </html>
