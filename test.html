@@ -42,14 +42,16 @@
             background-color: #98c287;
         }
         .btnClose {
-            position:  absolute;
-            left: 93%;
-            top: 5px;
-            background-color: #e69889;
-            padding: 4px 10px 4px 10px
+            padding: 12px 16px;
+            background-color: rgba(186, 186, 186, 0.98);
         }
         .btnClose:hover {
-            background-color: #c47f72;
+            background-color: rgba(127, 127, 127, 0.98);
+        }
+        .btnXmark
+        {
+            background-color: transparent; /* Синий фон */
+            border: none;
         }
 
         dialog::backdrop {
@@ -128,10 +130,10 @@
             <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="dialogTitle">Вікно для додання новини</h5>
-                            <button type="button" class="close" onclick='CloseDialogWindow()' aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                        <div class="modal-header pb-0 pt-0">
+                            <h4 class="modal-title" id="dialogTitle">Вікно для додання новини</h4>
+                            <button type="button" class="close btnXmark " onclick='CloseDialogWindow()' aria-label="Close">
+                                <span aria-hidden="true" style = "font-size: 50px">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" id = "ModalBody">
@@ -163,7 +165,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" id="news_close" onclick='CloseDialogWindow()'>Закрити</button>
+                            <button type="button" class="btn btn-secondary btnClose" id="news_close" onclick='CloseDialogWindow()'>Закрити</button>
                             <button type="button" class="btn btn-primary" id="news_save" onclick = "SaveChanges()">Зберігти</button>
                         </div>
                     </div>
@@ -229,7 +231,7 @@
             delete_butt.onclick = function()
             {
                 //alert(parseInt(this.id.substring(17)));
-              DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
+                DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
             };
 
 
@@ -438,7 +440,7 @@
 
         // добавляем область для домов
         var houseContainer = document.createElement("div");
-        houseContainer.className = "container-fluid p-0 m-0";
+        houseContainer.className = "container-fluid list-group p-0 m-0";
         houseContainer.id = "houseContainer0";
 
         modal.appendChild(houseContainer);
@@ -451,12 +453,20 @@
         for(var k in housesData.houses)
         {
             var houseElement = document.createElement("div");
+
+            houseElement.className = "list-group-item list-group-item-action border-2 pt-0";
             houseElement.style.minHeight = "100px";
             houseElement.style.height = "100px";
             houseElement.style.maxWidth = "795px";
-            houseElement.style.outline = "2px solid #000";
             houseElement.style.backgroundColor = "rgba(255,164,51,0.73)";
-            houseElement.style.borderColor = "rgba(255,164,51,0.73)";
+            houseElement.style.borderColor = "rgba(0,0,0,0.73)";
+            houseElement.onmouseover = function(){
+                this.style.backgroundColor = "rgba(201,134,38,0.73)";
+            };
+            houseElement.onmouseleave = function(){
+                this.style.backgroundColor = "rgba(255,164,51,0.73)";
+            };
+
             houseElement.id = "houseElement" + k;
             houseElement.name = k;
             houseElement.onclick = function()
@@ -498,7 +508,7 @@
 
         // добавляем область для подъездов
         var porchContainer = document.createElement("div");
-        porchContainer.className = "container-fluid p-0 m-0";
+        porchContainer.className = "container-fluid  p-0 m-0";
         porchContainer.id = "porchContainer0";
 
         modal.appendChild(porchContainer);
@@ -510,6 +520,8 @@
         var porchCreateButton = document.createElement("button");
         porchCreateButton.id = "porchCreateButton";
         porchCreateButton.innerHTML = "Додати новину до " + localStorage.getItem('CreateNewsHouseName');
+        porchCreateButton.className = "btn btnAdd mb-4 ";
+        porchCreateButton.style.fontSize = "20px";
         porchCreateButton.onclick = function()
         {
             localStorage.setItem("CreateNewsporch_id", "null");
@@ -519,15 +531,29 @@
         };
         porchContainer.appendChild(porchCreateButton);
 
+        var porchDivsContainer = document.createElement("div");
+        porchDivsContainer.className = "container-fluid list-group p-0 m-0";
+        porchDivsContainer.id = "porchDivsContainer0";
+
         //добавляем подъезды
         //k == News_id
+        let firstElem = true;
         for(var k in porchesData.porches)
         {
             var porchElement = document.createElement("div");
+            porchElement.className = "list-group-item list-group-item-action border-2 pt-0";
             porchElement.style.height = "100px";
             porchElement.style.maxWidth = "795px";
-            porchElement.style.outline = "2px solid #000";
             porchElement.style.backgroundColor = "rgba(255,198,98,0.73)";
+            porchElement.style.borderColor = "rgba(0,0,0,0.73)";
+            porchElement.onmouseover = function(){
+                this.style.backgroundColor = "rgba(205,154,81,0.73)";
+            };
+            porchElement.onmouseleave = function(){
+                this.style.backgroundColor = "rgba(255,198,98,0.73)";
+            };
+
+
             porchElement.id = "porchElement" + k;
             porchElement.name = k;
             porchElement.onclick = function()
@@ -538,6 +564,7 @@
                 ShowNewsEditor();
             };
 
+
             var porchName = document.createElement("h4");
             porchName.style.textAlign = "left";
             porchName.style.paddingTop = (parseInt(porchElement.style.height) / 3 ) + "px";
@@ -545,7 +572,8 @@
             porchName.innerHTML = porchesData.porches[k].porch_name;
 
             porchElement.appendChild(porchName);
-            porchContainer.appendChild( porchElement);
+            porchDivsContainer.appendChild(porchElement);
+            porchContainer.appendChild(porchDivsContainer);
         }
     }
 
@@ -807,10 +835,10 @@
             pel1.innerHTML = data.news[key]['house_location'] + ' ' +data.news[key]['house_number'];
             // Проверка на наличие подьезда
             if(data.news[key]['porch_name'] == null){
-            	pel2.innerHTML = 'Усі мешканці'
+                pel2.innerHTML = 'Усі мешканці'
             } else {
-            	pel2.innerHTML = data.news[key]['porch_name'];
-        	}	
+                pel2.innerHTML = data.news[key]['porch_name'];
+            }
             pel3.innerHTML = data.news[key]['title'];
             pel4.innerHTML = data.news[key]['text'];
             elem1.appendChild(pel1);
@@ -895,13 +923,11 @@
             .then(response => response.json())
             .then(NewsData => {
                 console.log('Success:', NewsData);
-
-
                 //Если закончилось время длительности токена
-                if("token is expired".indexOf(NewsData.error_message) !== -1)
+                if(NewsData.error_message && NewsData.error_message.indexOf("token") !== -1)
                 {
-                        alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
-                        Exit();
+                    alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
+                    Exit();
                 }
 
                 data = NewsData;
