@@ -779,8 +779,8 @@
             pel5.style.textAlign = "center";
             pel6.style.textAlign = "center";
             pel1.style.fontFamily = "Century Gothic";
-            pel1.style.fontSize = "25px";
-            pel2.style.fontSize = "25px";
+            pel1.style.fontSize = "20px";
+            pel2.style.fontSize = "20px";
             pel3.style.fontSize = "20px";
             pel4.style.fontSize = "20px";
             pel2.style.fontFamily = "Century Gothic";
@@ -809,8 +809,14 @@
                 DeleteNews(this.name);
             };
 
-            pel1.innerHTML = key;
-            pel2.innerHTML = data.news[key]['house_id'];
+            // Вывод локации и номер дома
+            pel1.innerHTML = data.news[key]['house_location'] + ' ' +data.news[key]['house_number'];
+            // Проверка на наличие подьезда
+            if(data.news[key]['porch_name'] == null){
+            	pel2.innerHTML = 'Усі мешканці'
+            } else {
+            	pel2.innerHTML = data.news[key]['porch_name'];
+        	}	
             pel3.innerHTML = data.news[key]['title'];
             pel4.innerHTML = data.news[key]['text'];
             elem1.appendChild(pel1);
