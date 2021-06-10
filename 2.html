@@ -51,6 +51,11 @@
         .btnClose:hover {
             background-color: #c47f72;
         }
+        .btnXmark
+        {
+            background-color: transparent; /* Синий фон */
+            border: none;
+        }
 
         dialog::backdrop {
             background-color: rgba(0, 0, 0, 0.8);
@@ -128,10 +133,10 @@
             <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="dialogTitle">Вікно для додання новини</h5>
-                            <button type="button" class="close" onclick='CloseDialogWindow()' aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                        <div class="modal-header pb-0 pt-0">
+                            <h4 class="modal-title" id="dialogTitle">Вікно для додання новини</h4>
+                            <button type="button" class="close btnXmark " onclick='CloseDialogWindow()' aria-label="Close">
+                                <span aria-hidden="true" style = "font-size: 50px">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" id = "ModalBody">
@@ -510,6 +515,8 @@
         var porchCreateButton = document.createElement("button");
         porchCreateButton.id = "porchCreateButton";
         porchCreateButton.innerHTML = "Додати новину до " + localStorage.getItem('CreateNewsHouseName');
+        porchCreateButton.className = "btn btnAdd mb-4 ";
+        porchCreateButton.style.fontSize = "20px";
         porchCreateButton.onclick = function()
         {
             localStorage.setItem("CreateNewsporch_id", "null");
