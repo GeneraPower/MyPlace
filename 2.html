@@ -143,6 +143,23 @@
                                 <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
                                 <label> Текст новини </label>
                                 <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+
+                                <div id="carouselExampleControls" class="carousel slide pt-4" data-ride="carousel" >
+                                    <div class="carousel-inner"  id = "carousel-body">
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </div>
+                                <div id = "input_placer" class="row container p-0 m-0 pt-4">
+
+                                </div>
+                                <button type="button" class="btn btn-secondary" id="news_add_image" onclick='AddImageField()'>Додати зображення</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -165,6 +182,175 @@
 
 </body>
 
+<!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
+<script>
+
+    let img_counter = 0; // счётчик для уникальности полей id
+    function AddImageField(imgSource = "") {
+        let canAdd = true;
+
+        //проверяем заполненны ли предыдушие поля для картинок
+        curr_fields = document.getElementsByName("imageField");
+        for (i = 0; i < curr_fields.length; i++) {
+
+            //if (curr_fields[i].value === "") {
+            if (curr_fields[i].readOnly === false) {
+                canAdd = false;
+                alert("Empty imgage field. Field #" + (i + 1));
+                break;
+            }
+        }
+
+        // Добавляем новое текстовое поле для ссылки на картинку
+        if (canAdd) {
+            let temp_counter_val =img_counter;
+
+            t_div = document.createElement('div');
+            t_div.className = "d-flex justify-content-between m-0 p-0";
+            t_div.id = "helperImageDiv" + temp_counter_val;
+
+            temp_inp = document.createElement('input');
+            temp_inp.type = "text";
+            temp_inp.name = "imageField";
+            temp_inp.placeholder = placeholder = "Лінк на зображення";
+            temp_inp.className = "col-8 mb-4";
+            temp_inp.id = "imageField" + temp_counter_val;
+
+
+            temp_inp.oninput = function () {
+                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
+            };
+
+            delete_butt = document.createElement('button');
+            delete_butt.className="col-3  mb-4 btn btn-danger";
+            delete_butt.style.backgroundColor = "#e69889";
+            delete_butt.innerHTML = "Видалити";
+            delete_butt.id = "deleteImageButton" + temp_counter_val;
+            delete_butt.onclick = function()
+            {
+                //alert(parseInt(this.id.substring(17)));
+                DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
+            };
+
+
+            news_body = document.getElementById('input_placer');
+            t_div.appendChild(temp_inp);
+            t_div.appendChild(delete_butt);
+            news_body.appendChild(t_div);
+
+            //Используеться при обновлении уже созданных новостей
+            // imgSource --> ссылка на картинку
+            if(imgSource !== "")
+            {
+                //Вставляем ссылку и блокируем инпут
+                temp_inp.value = imgSource;
+                temp_inp.readOnly = true;
+                temp_inp.style.backgroundColor = "lightGrey";
+
+                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
+            }
+
+        }
+        img_counter+= 1;
+    }
+
+    function DeleteImageInfo(index, helperDiv_id)
+    {
+
+        img_div = document.getElementById("imgDiv" + index);
+        if(img_div != null) {
+            if (img_div.className !== "carousel-item active") {
+                img_div.remove();
+            }else {
+                divs = document.getElementById('carousel-body').children;
+                for (i = 0; i < divs.length; i++) {
+
+                    if (divs[i].className !== "carousel-item active") {
+                        divs[i].className = "carousel-item active";
+                        break;
+                    }
+                }
+                img_div.remove();
+            }
+        }
+
+        t_div = document.getElementById(helperDiv_id);
+        t_div.remove();
+    }
+
+    function addImages(src, index, input_id)
+    {
+        //Блокируем соответствубщий инпут с ссылкой на картинку
+        input = document.getElementById(input_id);
+        input.readOnly = true;
+        input.style.backgroundColor = "lightGrey";
+
+
+        car_body = document.getElementById('carousel-body');
+
+        //Если емелента еще не существует
+        if(!document.getElementById("imgDiv" + index)) {
+            img_div = document.createElement('div');
+            img_div.name = "imgDiv";
+            img_div.id = "imgDiv" + index;
+
+            img = document.createElement('img');
+            img.className = "d-block w-100";
+            img.id = "imgImg" + index;
+            img.height = 300;
+            img.onerror = function () {
+                img.src = "https://www.aubreydaniels.com/sites/default/files/default_images/x2017-05-15_5.png.pagespeed.ic.tLD9q0ZZph.png";
+            };
+
+            // запрашиваем картинку
+            img.src = src;
+
+            img_div.appendChild(img);
+            car_body.appendChild(img_div);
+        }
+        else {
+            //не вызываеться так как ставим свойство readonly = true
+            /*
+            // Обновляем существующию картинку
+            img_div = document.getElementById("imgDiv" + index);
+            img = document.getElementById("imgImg" + index);
+
+            // запрашиваем картинку
+            img.src = src;
+            console.log("updated");
+            $('.carousel').carousel();
+
+             */
+        }
+
+        //Следим что бы был ровно 1 carousel-item active
+        var temp = document.getElementsByClassName('carousel-item active');
+        if(temp.length === 0) {
+            img_div.className = "carousel-item active";
+        }
+        else{
+            if(temp[0].id !== img_div.id) {
+                img_div.className = "carousel-item";
+            }
+        }
+
+        SetActive(img_div.id);
+    }
+
+    function SetActive(imgDiv_id){
+
+        var img_div = document.getElementById(imgDiv_id);
+        img_div.className = "carousel-item active";
+
+        divs = document.getElementById('carousel-body').children;
+        for (i = 0; i < divs.length; i++) {
+
+            if (divs[i].id !== imgDiv_id) {
+                divs[i].className = "carousel-item";
+            }
+        }
+    }
+</script>
 
 <script>
 
@@ -205,10 +391,14 @@
         newsBody.value = "";
         newsBody.placeholder = "Текст";
 
-        //Запрос на добавление новости
+        //Возвращаем в дефолт
         document.getElementById('news_save').onclick = function () {
             SaveChanges();
         };
+
+        //Удаляем информацию для роботы с картинками
+        DeleteChildren('carousel-body');
+        DeleteChildren('input_placer');
 
         document.getElementById("news_id").hidden = false;
         document.getElementById('news_editor').hidden = false;
@@ -218,13 +408,7 @@
 
     function Exit()
     {
-
-        localStorage.removeItem('houseKeeperToken');
-        localStorage.removeItem('CreateNewsHouse_id');
-        localStorage.removeItem('CreateNewsHouseName');
-        localStorage.removeItem('CreateNewsPorch_id');
-        localStorage.removeItem('CreateNewsPorchName');
-
+        localStorage.clear();
         document.location.href = "index.html";
     }
 
@@ -398,6 +582,16 @@
             {
                 temp_body.porch_id = parseInt(localStorage.getItem("CreateNewsPorch_id"));
             }
+            // Берем ссылки на картинки
+            var temp_obj = [];
+            divs = document.getElementById('carousel-body').children;
+            for (i = 0; i < divs.length; i++) {
+                temp_obj[i] = divs[i].children[0].src;
+            }
+            temp_body.images = temp_obj;
+            console.log("ok");
+            console.log(temp_body);
+
             AddNews(temp_body);
             CloseDialogWindow();
 
@@ -518,10 +712,10 @@
                 parBlock.style.marginTop = "10px";
             }
             else
-                {
-                    parBlock.style.marginTop = "2px";
-                    first = false;
-                }
+            {
+                parBlock.style.marginTop = "2px";
+                first = false;
+            }
 
             var elem1 = document.createElement("div");
             var elem2 = document.createElement("div");
@@ -579,8 +773,8 @@
             pel5.style.textAlign = "center";
             pel6.style.textAlign = "center";
             pel1.style.fontFamily = "Century Gothic";
-            pel1.style.fontSize = "25px";
-            pel2.style.fontSize = "25px";
+            pel1.style.fontSize = "20px";
+            pel2.style.fontSize = "20px";
             pel3.style.fontSize = "20px";
             pel4.style.fontSize = "20px";
             pel2.style.fontFamily = "Century Gothic";
@@ -594,36 +788,10 @@
             pel5.id = "changeBut"+key;
             pel5.name = key;
 
+            // Нажатие на кнопку "Редактировать"
             pel5.onclick= async function() {
-
-                let tempNewsId = this.name;
-                //Обновляем информацию о новостях
-                // По хорошему, тут нужно обновлять инфу только об одной новости (сейчас о всех доступных)
-                await GetNews();
-
-                document.getElementById('news_id').innerHTML = "ID Новини:" + tempNewsId;
-                document.getElementById('news_id').name = tempNewsId;
-                document.getElementById('news_title').value=data.news[tempNewsId]['title'];
-                document.getElementById('news_body').value=data.news[tempNewsId]['text'];
-                document.getElementById('news_house').innerHTML="Дім: " + data.news[tempNewsId]['house_id'];
-                document.getElementById('news_porch').innerHTML="Під'їзд: " + data.news[tempNewsId]['porch_id'];
-                document.getElementById('dialogTitle').innerHTML="Редагування новини";
-
-                // Функция для обновления новости при нажатии на кнопку Сохранить
-                document.getElementById('news_save').onclick = async function(){
-                    //Отправляем новые данные на сервер
-                    const temp_body =
-                        {
-                            title: document.getElementById('news_title').value,
-                            text: document.getElementById('news_body').value
-                        };
-                    await UpdateNews(tempNewsId, temp_body);
-
-                    CloseDialogWindow();
-                };
-
-                //отображаем текущюю информацию о новости
-                ShowDialogWindow();
+                //Получаем данные новости
+                await GetOneNews(this.name);
             };
 
             pel6.className = "btn btnDel";
@@ -635,8 +803,14 @@
                 DeleteNews(this.name);
             };
 
-            pel1.innerHTML = key;
-            pel2.innerHTML = data.news[key]['house_id'];
+            // Вывод локации и номер дома
+            pel1.innerHTML = data.news[key]['house_location'] + ' ' +data.news[key]['house_number'];
+            // Проверка на наличие подьезда
+            if(data.news[key]['porch_name'] == null){
+                pel2.innerHTML = 'Усі мешканці'
+            } else {
+                pel2.innerHTML = data.news[key]['porch_name'];
+            }
             pel3.innerHTML = data.news[key]['title'];
             pel4.innerHTML = data.news[key]['text'];
             elem1.appendChild(pel1);
@@ -656,8 +830,58 @@
         }
     }
 
+    function EditNews() {
+        console.log(oneNewsData.news.news_id);
+        console.log("^^^");
+
+        document.getElementById('news_id').innerHTML = "ID Новини:" + oneNewsData.news.news_id;
+        document.getElementById('news_id').name = oneNewsData.news.news_id;
+        document.getElementById('news_title').value = oneNewsData.news.title;
+        document.getElementById('news_body').value = oneNewsData.news.text;
+        document.getElementById('news_house').innerHTML = "Дім: " + oneNewsData.news.house_number;
+
+        document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
+        document.getElementById('dialogTitle').innerHTML = "Редагування новини";
+
+        //Учитываем картинки
+        if(oneNewsData.images !== null) {
+            for (let i = 0; i < oneNewsData.images.length; i++) {
+                AddImageField(oneNewsData.images[i]);
+            }
+            console.log(oneNewsData.images.length);
+        }
+
+
+        // Функция для обновления новости при нажатии на кнопку Сохранить
+        document.getElementById('news_save').onclick = async function () {
+            //Отправляем новые данные на сервер
+            const temp_body =
+                {
+                    title: document.getElementById('news_title').value,
+                    text: document.getElementById('news_body').value
+                };
+            // Берем ссылки на картинки
+            var temp_obj = [];
+            divs = document.getElementById('carousel-body').children;
+            for (i = 0; i < divs.length; i++) {
+                temp_obj[i] = divs[i].children[0].src;
+            }
+            temp_body.images = temp_obj;
+
+            console.log("temmpmpmp");
+            console.log(temp_body);
+            await UpdateNews(oneNewsData.news.news_id, temp_body);
+
+            CloseDialogWindow();
+        };
+
+        //отображаем текущюю информацию о новости
+        ShowDialogWindow();
+    }
+
     async function GetNews()
     {
+
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -671,8 +895,42 @@
             .then(response => response.json())
             .then(NewsData => {
                 console.log('Success:', NewsData);
+
+
+                //Если закончилось время длительности токена
+                if("token is expired".indexOf(NewsData.error_message) !== -1)
+                {
+                    alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
+                    Exit();
+                }
+
                 data = NewsData;
                 FillNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return true;
+    }
+
+    oneNewsData = {};
+    async function GetOneNews(news_id)
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/news/' + news_id, {
+            method: 'GET',
+            headers: head
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                oneNewsData  = NewsData;
+                EditNews();
             })
             .catch((error) => {
                 console.error('Error:', error);

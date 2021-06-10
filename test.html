@@ -898,7 +898,7 @@
 
 
                 //Если закончилось время длительности токена
-                if("token is expired".indexOf(NewsData.error_message))
+                if("token is expired".indexOf(NewsData.error_message) !== -1)
                 {
                         alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
                         Exit();
