@@ -19,20 +19,21 @@
         </div>
         <div class="modal-body">
         <form id="auth" action = "1.html" method = "post">
-            <div class="row mb-2">
+            <div class="row mb-1">
                 <label for="InputEmail" class="col-sm-4 col-form-label">Введіть ваш Email</label>
                 <div class="col-sm-12">
-                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>
                     <input type="email" class="form-control"  id="InputEmail" form="auth">
+                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>
                 </div>
             </div>
             <div class="row mb-2">
                 <label for="InputPass" class="col-sm-5 col-form-label">Введіть ваш Пароль</label>
                 <div class="col-sm-12">
                     <input type="password" class="form-control" id="InputPass" form="auth">
+                    <label id = "passwordErr" class="col-sm-4 col-form-label" style = "display: none"></label>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mb-2">
                 <input type="button" class="btn btn-success" value = "Відправити" onclick="SerlData()" >
             </div>
             <div id = "errorField">
@@ -54,9 +55,11 @@
     function SerlData()
     {
         const emailStr = document.getElementById('InputEmail').value;
-        const regex = /@gmail.com$/;
-
-        if(emailStr.search(regex)!== -1) {
+        const password = document.getElementById('InputPass').value;
+        const regex = /@gmail.com|@ukr.net$/;
+        document.getElementById('emailErr').innerHTML = "" ;
+        document.getElementById('passwordErr').innerHTML = "" ;
+        if(emailStr.search(regex)!== -1 && password.length>4) {
             let data = {
                 email: emailStr,
                 password: document.getElementById('InputPass').value
@@ -82,12 +85,20 @@
                     console.error('Error:', error);
                 });
         }
+        else if(emailStr.search(regex)=== -1)
+        {
+            let label = document.getElementById('emailErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('emailErr').innerHTML = "Приклад імейлу: polozov@gmail.com" ;
+        }
         else
-            {
-                let label = document.getElementById('emailErr');
-                label.style.display = "block";
-                document.getElementById('emailErr').innerHTML = "Помилковий імейл. Приклад імейлу: polozov@gmail.com" ;
-            }
+        {
+            let label = document.getElementById('passwordErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('passwordErr').innerHTML = "Приклад паролю: XxX43" ;
+        }
     }
 </script>
 </html>
