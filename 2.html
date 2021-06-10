@@ -839,8 +839,8 @@
             } else {
                 pel2.innerHTML = data.news[key]['porch_name'];
             }
-            pel3.innerHTML = data.news[key]['title'];
-            pel4.innerHTML = data.news[key]['text'];
+            pel3.innerHTML = (data.news[key]['title'].length > 50) ? data.news[key]['title'].substr(0,50) + "..." : data.news[key]['title'];
+            pel4.innerHTML = (data.news[key]['text'].length > 100) ? data.news[key]['text'].substr(0,100) + "..." : data.news[key]['text'];
             elem1.appendChild(pel1);
             elem2.appendChild(pel2);
             elem3.appendChild(pel3);
