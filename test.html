@@ -527,7 +527,7 @@
             localStorage.setItem("CreateNewsporch_id", "null");
             localStorage.setItem("CreateNewsPorchName", "null");
             DeleteElement(porchContainer.id);
-            ShowNewsEditor();
+            ShowModalEditor();
         };
         porchContainer.appendChild(porchCreateButton);
 
@@ -561,7 +561,7 @@
                 localStorage.setItem("CreateNewsPorch_id", this.name);
                 localStorage.setItem("CreateNewsPorchName", this.children[0].innerHTML);
                 DeleteElement(porchContainer.id);
-                ShowNewsEditor();
+                ShowModalEditor();
             };
 
 
@@ -578,7 +578,7 @@
     }
 
     //Отображает в диалоговом окне поля для создания новости
-    function ShowNewsEditor()
+    function ShowModalEditor()
     {
         document.getElementById('dialogTitle').innerHTML="Додавання новини";
         document.getElementById("news_id").hidden = true;

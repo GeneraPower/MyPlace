@@ -161,7 +161,7 @@
                                 <div id = "input_placer" class="row container p-0 m-0 pt-4">
 
                                 </div>
-                                <button type="button" class="btn btn-secondary" id="news_add_image" onclick='AddImageField()'>Додати зображення</button>
+                                <button type="button" class="btn btn-secondary" id="news_add_image" onclick='AddImageField(imageNeededParams)'>Додати зображення</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -184,175 +184,50 @@
 
 </body>
 
-<!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
+<!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ ПОБОТЫ ФУНКЦИЙ -->
 <script>
+    // Параметры дла работы с картинками (AddImageField)
+    let imageNeededParams =
+        {
+            inputHolderId : 'input_placer',         // Место для размещения инпутов
+            carouselBodyId : 'carousel-body'        // Место для размещения carousel-item
+        };
 
-    let img_counter = 0; // счётчик для уникальности полей id
-    function AddImageField(imgSource = "") {
-        let canAdd = true;
+    // Параметры дла роботы с локальным хранилищем
+    let localStorageParams = {
+        HouseId: "CreateNewsHouse_id",              // Id выбраного дома (при создании новости)
+        HouseName: "CreateNewsHouseName",           // Name выбраного дома (при создании новости)
+        PorchId: "CreateNewsPorch_id",              // Id выбраного подъезда (при создании новости)
+        PorchName: "CreateNewsPorchName",           // Name выбраного подъезда (при создании новости)
+        HouseKeeperToken: "houseKeeperToken"        // Токен домовладельца
+    };
 
-        //проверяем заполненны ли предыдушие поля для картинок
-        curr_fields = document.getElementsByName("imageField");
-        for (i = 0; i < curr_fields.length; i++) {
+    // Параметры модального окна
+    let modalWindowParams = {
+        modalHeaderTitleId: 'dialogTitle',          // ID заголовка модального окна
+        modalBodyDivId: 'ModalBody',                //  ID тела модального окна
+        modalEditorDivId:'news_editor' ,            // ID div с содержимым модального окна
+    };
 
-            //if (curr_fields[i].value === "") {
-            if (curr_fields[i].readOnly === false) {
-                canAdd = false;
-                alert("Empty imgage field. Field #" + (i + 1));
-                break;
-            }
-        }
-
-        // Добавляем новое текстовое поле для ссылки на картинку
-        if (canAdd) {
-            let temp_counter_val =img_counter;
-
-            t_div = document.createElement('div');
-            t_div.className = "d-flex justify-content-between m-0 p-0";
-            t_div.id = "helperImageDiv" + temp_counter_val;
-
-            temp_inp = document.createElement('input');
-            temp_inp.type = "text";
-            temp_inp.name = "imageField";
-            temp_inp.placeholder = placeholder = "Лінк на зображення";
-            temp_inp.className = "col-8 mb-4";
-            temp_inp.id = "imageField" + temp_counter_val;
+    //Обьект для что содержит все новости домоуправленца
+    let data = {};
 
 
-            temp_inp.oninput = function () {
-                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
-            };
-
-            delete_butt = document.createElement('button');
-            delete_butt.className="col-3  mb-4 btn btn-danger";
-            delete_butt.style.backgroundColor = "#e69889";
-            delete_butt.innerHTML = "Видалити";
-            delete_butt.id = "deleteImageButton" + temp_counter_val;
-            delete_butt.onclick = function()
-            {
-                //alert(parseInt(this.id.substring(17)));
-                DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
-            };
 
 
-            news_body = document.getElementById('input_placer');
-            t_div.appendChild(temp_inp);
-            t_div.appendChild(delete_butt);
-            news_body.appendChild(t_div);
-
-            //Используеться при обновлении уже созданных новостей
-            // imgSource --> ссылка на картинку
-            if(imgSource !== "")
-            {
-                //Вставляем ссылку и блокируем инпут
-                temp_inp.value = imgSource;
-                temp_inp.readOnly = true;
-                temp_inp.style.backgroundColor = "lightGrey";
-
-                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
-            }
-
-        }
-        img_counter+= 1;
-    }
-
-    function DeleteImageInfo(index, helperDiv_id)
-    {
-
-        img_div = document.getElementById("imgDiv" + index);
-        if(img_div != null) {
-            if (img_div.className !== "carousel-item active") {
-                img_div.remove();
-            }else {
-                divs = document.getElementById('carousel-body').children;
-                for (i = 0; i < divs.length; i++) {
-
-                    if (divs[i].className !== "carousel-item active") {
-                        divs[i].className = "carousel-item active";
-                        break;
-                    }
-                }
-                img_div.remove();
-            }
-        }
-
-        t_div = document.getElementById(helperDiv_id);
-        t_div.remove();
-    }
-
-    function addImages(src, index, input_id)
-    {
-        //Блокируем соответствубщий инпут с ссылкой на картинку
-        input = document.getElementById(input_id);
-        input.readOnly = true;
-        input.style.backgroundColor = "lightGrey";
-
-
-        car_body = document.getElementById('carousel-body');
-
-        //Если емелента еще не существует
-        if(!document.getElementById("imgDiv" + index)) {
-            img_div = document.createElement('div');
-            img_div.name = "imgDiv";
-            img_div.id = "imgDiv" + index;
-
-            img = document.createElement('img');
-            img.className = "d-block w-100";
-            img.id = "imgImg" + index;
-            img.height = 300;
-            img.onerror = function () {
-                img.src = "https://www.aubreydaniels.com/sites/default/files/default_images/x2017-05-15_5.png.pagespeed.ic.tLD9q0ZZph.png";
-            };
-
-            // запрашиваем картинку
-            img.src = src;
-
-            img_div.appendChild(img);
-            car_body.appendChild(img_div);
-        }
-        else {
-            //не вызываеться так как ставим свойство readonly = true
-            /*
-            // Обновляем существующию картинку
-            img_div = document.getElementById("imgDiv" + index);
-            img = document.getElementById("imgImg" + index);
-
-            // запрашиваем картинку
-            img.src = src;
-            console.log("updated");
-            $('.carousel').carousel();
-
-             */
-        }
-
-        //Следим что бы был ровно 1 carousel-item active
-        var temp = document.getElementsByClassName('carousel-item active');
-        if(temp.length === 0) {
-            img_div.className = "carousel-item active";
-        }
-        else{
-            if(temp[0].id !== img_div.id) {
-                img_div.className = "carousel-item";
-            }
-        }
-
-        SetActive(img_div.id);
-    }
-
-    function SetActive(imgDiv_id){
-
-        var img_div = document.getElementById(imgDiv_id);
-        img_div.className = "carousel-item active";
-
-        divs = document.getElementById('carousel-body').children;
-        for (i = 0; i < divs.length; i++) {
-
-            if (divs[i].id !== imgDiv_id) {
-                divs[i].className = "carousel-item";
-            }
-        }
-    }
 </script>
+
+<!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
+<script src = "scripts/ImageControl.js"></script>
+
+<!-- Cкрипт для возврата в окно регистрации -->
+<script src = "scripts/Exit.js"></script>
+
+<!-- Cкрипт для удаления елементов -->
+<script src = "scripts/DeleteElements.js"></script>
+
+<!-- Cкрипт для выбора дома и подъезда, после выбора подъезда выполняеться переданная в скрипт функция -->
+<script src = "scripts/SelectHousesAndPorches.js"></script>
 
 <script>
 
@@ -399,23 +274,15 @@
         };
 
         //Удаляем информацию для роботы с картинками
-        DeleteChildren('carousel-body');
-        DeleteChildren('input_placer');
+        DeleteChildren(imageNeededParams.carouselBodyId);
+        DeleteChildren(imageNeededParams.inputHolderId);
 
         document.getElementById("news_id").hidden = false;
         document.getElementById('news_editor').hidden = false;
     }
 </script>
+
 <script>
-
-    function Exit()
-    {
-        localStorage.clear();
-        document.location.href = "index.html";
-    }
-
-    let data = {};
-
 
     function Start()
     {
@@ -423,162 +290,15 @@
     }
 
     function OpenDialog() {
-        GetHouses();
+
+        SelectHousesAndPorches(true, modalWindowParams, localStorageParams, ShowModalEditor);
         ShowDialogWindow();
     }
 
-    //Добавляем выбор домов в диалоговом окне
-    function SelectHouses()
-    {
-        //Заполняем объект houses
-        console.log("Данные для SelectHouses(): " + housesData);
 
-        //Скрываем елементы для добавления новости
-        document.getElementById('news_editor').hidden = true;
-
-        modal = document.getElementById('ModalBody');
-
-        // добавляем область для домов
-        var houseContainer = document.createElement("div");
-        houseContainer.className = "container-fluid list-group p-0 m-0";
-        houseContainer.id = "houseContainer0";
-
-        modal.appendChild(houseContainer);
-
-        //добавляем надпись
-        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний будинок:";
-
-        //добавляем дома
-        // k == idДома
-        for(var k in housesData.houses)
-        {
-            var houseElement = document.createElement("div");
-
-            houseElement.className = "list-group-item list-group-item-action border-2 pt-0";
-            houseElement.style.minHeight = "100px";
-            houseElement.style.height = "100px";
-            houseElement.style.maxWidth = "795px";
-            houseElement.style.backgroundColor = "rgba(255,164,51,0.73)";
-            houseElement.style.borderColor = "rgba(0,0,0,0.73)";
-            houseElement.onmouseover = function(){
-                this.style.backgroundColor = "rgba(201,134,38,0.73)";
-            };
-            houseElement.onmouseleave = function(){
-                this.style.backgroundColor = "rgba(255,164,51,0.73)";
-            };
-
-            houseElement.id = "houseElement" + k;
-            houseElement.name = k;
-            houseElement.onclick = function()
-            {
-                localStorage.setItem("CreateNewsHouse_id", this.name);
-                localStorage.setItem("CreateNewsHouseName", this.children[0].innerHTML);
-                DeleteElement(houseElement.parentElement.id);
-                GetPorches(this.name);
-            };
-
-            var houseName = document.createElement("h4");
-            houseName.style.textAlign = "left";
-            houseName.style.paddingTop = (parseInt(houseElement.style.height) / 3 ) + "px";
-            houseName.style.alignSelf = "center";
-            houseName.innerHTML = housesData.houses[k].house_number;
-
-            houseElement.appendChild(houseName);
-            houseContainer.appendChild(houseElement);
-        }
-    }
-
-    function DeleteElement(ElementId)
-    {
-        var el = document.getElementById(ElementId);
-
-        var child = el.lastElementChild;
-        while(child)
-        {
-            el.removeChild(child);
-            child = el.lastElementChild;
-        }
-        el.remove();
-
-    }
-
-    function SelectPorches()
-    {
-        modal = document.getElementById('ModalBody');
-
-        // добавляем область для подъездов
-        var porchContainer = document.createElement("div");
-        porchContainer.className = "container-fluid  p-0 m-0";
-        porchContainer.id = "porchContainer0";
-
-        modal.appendChild(porchContainer);
-
-        //добавляем надпись
-        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний під`їзд";
-
-        //добавляем кнопку для создания новости
-        var porchCreateButton = document.createElement("button");
-        porchCreateButton.id = "porchCreateButton";
-        porchCreateButton.innerHTML = "Додати новину до " + localStorage.getItem('CreateNewsHouseName');
-        porchCreateButton.className = "btn btnAdd mb-4 ";
-        porchCreateButton.style.fontSize = "20px";
-        porchCreateButton.onclick = function()
-        {
-            localStorage.setItem("CreateNewsporch_id", "null");
-            localStorage.setItem("CreateNewsPorchName", "null");
-            DeleteElement(porchContainer.id);
-            ShowNewsEditor();
-        };
-        porchContainer.appendChild(porchCreateButton);
-
-        var porchDivsContainer = document.createElement("div");
-        porchDivsContainer.className = "container-fluid list-group p-0 m-0";
-        porchDivsContainer.id = "porchDivsContainer0";
-
-        //добавляем подъезды
-        //k == News_id
-        let firstElem = true;
-        for(var k in porchesData.porches)
-        {
-            var porchElement = document.createElement("div");
-            porchElement.className = "list-group-item list-group-item-action border-2 pt-0";
-            porchElement.style.height = "100px";
-            porchElement.style.maxWidth = "795px";
-            porchElement.style.backgroundColor = "rgba(255,198,98,0.73)";
-            porchElement.style.borderColor = "rgba(0,0,0,0.73)";
-            porchElement.onmouseover = function(){
-                this.style.backgroundColor = "rgba(205,154,81,0.73)";
-            };
-            porchElement.onmouseleave = function(){
-                this.style.backgroundColor = "rgba(255,198,98,0.73)";
-            };
-
-
-            porchElement.id = "porchElement" + k;
-            porchElement.name = k;
-            porchElement.onclick = function()
-            {
-                localStorage.setItem("CreateNewsPorch_id", this.name);
-                localStorage.setItem("CreateNewsPorchName", this.children[0].innerHTML);
-                DeleteElement(porchContainer.id);
-                ShowNewsEditor();
-            };
-
-
-            var porchName = document.createElement("h4");
-            porchName.style.textAlign = "left";
-            porchName.style.paddingTop = (parseInt(porchElement.style.height) / 3 ) + "px";
-            porchName.style.alignSelf = "center";
-            porchName.innerHTML = porchesData.porches[k].porch_name;
-
-            porchElement.appendChild(porchName);
-            porchDivsContainer.appendChild(porchElement);
-            porchContainer.appendChild(porchDivsContainer);
-        }
-    }
 
     //Отображает в диалоговом окне поля для создания новости
-    function ShowNewsEditor()
+    function ShowModalEditor()
     {
         document.getElementById('dialogTitle').innerHTML="Додавання новини";
         document.getElementById("news_id").hidden = true;
@@ -612,7 +332,7 @@
             }
             // Берем ссылки на картинки
             var temp_obj = [];
-            divs = document.getElementById('carousel-body').children;
+            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
             for (i = 0; i < divs.length; i++) {
                 temp_obj[i] = divs[i].children[0].src;
             }
@@ -709,17 +429,7 @@
         document.getElementById("tableHeader").appendChild(parBlock);
     }
 
-    function DeleteChildren(ElementId)
-    {
-        var el = document.getElementById(ElementId);
 
-        var child = el.lastElementChild;
-        while(child)
-        {
-            el.removeChild(child);
-            child = el.lastElementChild;
-        }
-    }
 
     function FillNews(){
 
@@ -874,7 +584,7 @@
         //Учитываем картинки
         if(oneNewsData.images !== null) {
             for (let i = 0; i < oneNewsData.images.length; i++) {
-                AddImageField(oneNewsData.images[i]);
+                AddImageField(imageNeededParams, oneNewsData.images[i]);
             }
             console.log(oneNewsData.images.length);
         }
@@ -890,7 +600,7 @@
                 };
             // Берем ссылки на картинки
             var temp_obj = [];
-            divs = document.getElementById('carousel-body').children;
+            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
             for (i = 0; i < divs.length; i++) {
                 temp_obj[i] = divs[i].children[0].src;
             }
@@ -964,53 +674,7 @@
         return true;
     }
 
-    var housesData = {};
-    function GetHouses()
-    {
-        const head =
-            {
-                'Content-type': 'application/json; charset=UTF-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
-            };
 
-        fetch('https://prp-project-server.herokuapp.com/api/house/', {
-            method: 'GET',
-            headers: head,
-        })
-            .then(response => response.json())
-            .then(HousesData => {
-                console.log('Success:', HousesData);
-                housesData= HousesData;
-                SelectHouses();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
-
-    var porchesData = {};
-    function GetPorches(houseId)
-    {
-        const head =
-            {
-                'Content-type': 'application/json; charset=UTF-8',
-                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
-            };
-
-        fetch('https://prp-project-server.herokuapp.com/api/porch/' + houseId, {
-            method: 'GET',
-            headers: head,
-        })
-            .then(response => response.json())
-            .then(Data => {
-                console.log('Success:', Data);
-                porchesData = Data;
-                SelectPorches();
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
 
     function DeleteNews(newsId)
     {
