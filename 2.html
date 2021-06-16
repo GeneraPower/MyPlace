@@ -16,8 +16,11 @@
 
     <style>
         /* Кнопки стиля */
+        body{
+        	font-family:Century Gothic;
+        }
         .btn {
-            background-color: #9be3e6; /* Синий фон */
+            background-color: #A0CDE8; /* Синий фон */
             border: none;
             color: white;
             padding: 12px 16px;
@@ -72,6 +75,11 @@
             display: block;overflow-y: scroll;
             margin-top: 2px;
             height: calc(100vh - 250px);
+        }
+        .editorLabel
+        {
+        	font-family:Century Gothic;
+        	font-size: 20px;
         }
 
     </style>
@@ -138,13 +146,13 @@
                         </div>
                         <div class="modal-body" id = "ModalBody">
                             <div id = "news_editor" style="min-width: 500px; display: flex; flex-direction: column; ">
-                                <label id = "news_id">ID новини:</label>
-                                <label id = "news_house">Дом:</label>
-                                <label id = "news_porch">Під`їзд:</label>
-                                <label> Заголовок новини </label>
-                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
-                                <label> Текст новини </label>
-                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
+                                <label id = "news_id" class = "editorLabel" >ID новини:</label>
+                                <label id = "news_house" class = "editorLabel">Дім:</label>
+                                <label id = "news_porch" class = "editorLabel">Під`їзд:</label>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Заголовок новини </label>
+                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Текст новини </label>
+                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
 
                                 <div id="carouselExampleControls" class="carousel slide pt-4" data-ride="carousel" >
                                     <div class="carousel-inner"  id = "carousel-body">
@@ -161,7 +169,10 @@
                                 <div id = "input_placer" class="row container p-0 m-0 pt-4">
 
                                 </div>
-                                <button type="button" class="btn btn-secondary" id="news_add_image" onclick='AddImageField(imageNeededParams)'>Додати зображення</button>
+                                <button type="button" style="background-color: #9EDC9B" class="btn btn-secondary" id="news_add_image" onclick='AddImageField(imageNeededParams)'>Додати зображення</button>
+                                <div id = "errorField" class = "text-center mb-0 pb-0" >
+                					<p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Усі поля повинні бути заповнені</p>
+            					</div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -245,6 +256,7 @@
     });
 
     function CloseDialogWindow() {
+    	document.getElementById('errorMessage').hidden = true;
         $("#NewsModalWindow").modal('hide');
     }
 
@@ -286,6 +298,7 @@
 
     function Start()
     {
+    	document.getElementById('errorMessage').hidden = true;
         GetNews();
     }
 
@@ -302,7 +315,7 @@
     {
         document.getElementById('dialogTitle').innerHTML="Додавання новини";
         document.getElementById("news_id").hidden = true;
-        document.getElementById("news_house").innerHTML = "Дом: " + localStorage.getItem("CreateNewsHouseName");
+        document.getElementById("news_house").innerHTML = "Дім: " + localStorage.getItem("CreateNewsHouseName");
         if(localStorage.getItem("CreateNewsPorchName") !== "null") {
             document.getElementById("news_porch").innerHTML = "Під`їзд: " + localStorage.getItem("CreateNewsPorchName");
         }
@@ -320,6 +333,7 @@
 
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
+        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0){
             const temp_body =
                 {
                     house_id: parseInt(localStorage.getItem("CreateNewsHouse_id")),
@@ -339,9 +353,12 @@
             temp_body.images = temp_obj;
             console.log("ok");
             console.log(temp_body);
-
+			document.getElementById('errorMessage').hidden = true;
             AddNews(temp_body);
             CloseDialogWindow();
+        }else{
+        	document.getElementById('errorMessage').hidden = false;
+        }
 
         };
         document.getElementById('news_editor').hidden = false;
@@ -592,6 +609,7 @@
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
+        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0){
             //Отправляем новые данные на сервер
             const temp_body =
                 {
@@ -608,9 +626,13 @@
 
             console.log("temmpmpmp");
             console.log(temp_body);
+            document.getElementById('errorMessage').hidden = true;
             await UpdateNews(oneNewsData.news.news_id, temp_body);
 
             CloseDialogWindow();
+        } else{
+        	document.getElementById('errorMessage').hidden = false;
+        }
         };
 
         //отображаем текущюю информацию о новости
