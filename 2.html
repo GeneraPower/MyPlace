@@ -14,75 +14,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-    <style>
-        /* Кнопки стиля */
-        body{
-        	font-family:Century Gothic;
-        }
-        .btn {
-            background-color: #A0CDE8; /* Синий фон */
-            border: none;
-            color: white;
-            padding: 12px 16px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .btn:hover{
-            background-color: #79b5b8;
-        }
-        .btnDel {
-            background-color: #e69889;
-        }
-        .btnDel:hover {
-            background-color: #c47f72;
-        }
-        .btnAdd {
-            background-color: #b8e6a2;
-            min-width: 300px;
-            min-height: 60px;
-        }
-        .btnAdd:hover {
-            background-color: #98c287;
-        }
-        .btnClose {
-            padding: 12px 16px;
-            background-color: rgba(186, 186, 186, 0.98);
-        }
-        .btnClose:hover {
-            background-color: rgba(127, 127, 127, 0.98);
-        }
-        .btnXmark
-        {
-            background-color: transparent; /* Синий фон */
-            border: none;
-        }
-
-        dialog::backdrop {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .addButtonArea
-        {
-            margin-left: 20px;
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: left;
-            margin-bottom: -50px;
-            margin-right: 12px;
-        }
-        .gridContent
-        {
-            display: block;overflow-y: scroll;
-            margin-top: 2px;
-            height: calc(100vh - 250px);
-        }
-        .editorLabel
-        {
-        	font-family:Century Gothic;
-        	font-size: 20px;
-        }
-
-    </style>
+    <!-- Подключаем css-->
+    <link rel="stylesheet" type="text/css" href="CSS/General.css">
 
 </head>
 <body onLoad="Start()">
@@ -177,7 +110,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary btnClose" id="news_close" onclick='CloseDialogWindow()'>Закрити</button>
-                            <button type="button" class="btn btn-primary" id="news_save" onclick = "SaveChanges()">Зберігти</button>
+                            <button type="button" class="btn btn-primary" id="news_save" hidden = true onclick = "SaveChanges()">Зберігти</button>
                         </div>
                     </div>
                 </div>
@@ -195,7 +128,7 @@
 
 </body>
 
-<!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ ПОБОТЫ ФУНКЦИЙ -->
+<!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ РАБОТЫ ФУНКЦИЙ -->
 <script>
     // Параметры дла работы с картинками (AddImageField)
     let imageNeededParams =
@@ -281,6 +214,7 @@
         newsBody.placeholder = "Текст";
 
         //Возвращаем в дефолт
+        document.getElementById('news_save').hidden = true;
         document.getElementById('news_save').onclick = function () {
             SaveChanges();
         };
@@ -332,6 +266,7 @@
         newsBody.placeholder = "Текст";
 
         //Запрос на добавление новости
+        document.getElementById('news_save').hidden = false;
         document.getElementById('news_save').onclick = function(){
         	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0){
             const temp_body =
@@ -597,6 +532,9 @@
 
         document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
         document.getElementById('dialogTitle').innerHTML = "Редагування новини";
+
+        // Отображаем кнокпу сохранения
+        document.getElementById('news_save').hidden = false;
 
         //Учитываем картинки
         if(oneNewsData.images !== null) {
