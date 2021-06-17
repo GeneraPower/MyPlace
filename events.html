@@ -618,7 +618,8 @@
 
         document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Подія для усього будинку";
         document.getElementById('dialogTitle').innerHTML = "Редагування події";
-
+        document.getElementById('localdateStart').type = "text";
+        document.getElementById('localdateEnd').type = "text";
         //Учитываем картинки
         if(oneNewsData.images !== null) {
             for (let i = 0; i < oneNewsData.images.length; i++) {
@@ -630,6 +631,8 @@
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
+            document.getElementById("localdateEnd").type = "text";
+            document.getElementById("localdateStart").type = "text";
         	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0 && document.getElementById("localdateStart").value.length!=0 && document.getElementById("localdateEnd").value.length!=0 && document.getElementById("localdateStart").value<document.getElementById("localdateEnd").value){
             //Отправляем новые данные на сервер
             const temp_body =
