@@ -97,10 +97,10 @@
                             <a class="nav-link pl-0 text-nowrap" href="#"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                            <a class="nav-link pl-0" href="fundraisings.html"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="#"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
+                            <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link pl-0" href="#"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
@@ -589,7 +589,7 @@
         console.log(oneNewsData.news.news_id);
         console.log("^^^");
 
-        document.getElementById('news_id').innerHTML = "ID Новини:" + oneNewsData.news.news_id;
+        document.getElementById('news_id').innerHTML = "ID Новини: " + oneNewsData.news.news_id;
         document.getElementById('news_id').name = oneNewsData.news.news_id;
         document.getElementById('news_title').value = oneNewsData.news.title;
         document.getElementById('news_body').value = oneNewsData.news.text;
