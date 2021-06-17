@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Библиотека с иконками -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <!-- Подключаем css-->
+    <link rel="stylesheet" type="text/css" href="CSS/General.css">
+    <link rel="stylesheet" type="text/css" href="CSS/LetterSwitch.css">
+
+
+</head>
+<body onLoad="Start()">
+
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
+        <!-- лівосторонне меню -->
+        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top ">
+                <div class="collapse navbar-collapse aside_header__inner">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                        <li class="nav-item">
+                            <a class="nav-link pl-0 text-nowrap" href="2.html"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="fundraisings.html"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="HouseKeeperLetters.html">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <span class="d-none d-md-inline" style = "margin-right: 4px;">Перегляд листів</span>
+                                <span id = "LetterCounter" style="min-height: 20px; min-width: 20px; padding-right: 5px; padding-left: 2px; background-color: #e66548;  border-radius: 3px;">
+                                    <b id = "LetterCounterText"></b>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+
+        <main class="col-12 col-md-10 bg-faded flex-grow-1 p-0">
+
+            <header class = "row-fluid pt-3 pb-3  sticky-top" style="background-color: slategrey"  >
+                <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
+            </header>
+
+            <h3 class = "text-center pb-0 mb-2 pt-4 pb-4">Налаштування аккаунту</h3>
+
+            <div id = "content" class = "container-fluid">
+
+                <!-- Первий блок -->
+                <div id = "AccauntSettings" class = "row justify-content-center pb-4 mb-4 pt-4">
+                    <div class = "PasswordInfo col-5 " id = "AccauntInfo">
+                        <div class = "row pb-2">
+                            <h5 class = "col-4" align="right">Псевдонім</h5>
+                            <input type = text id = "Nickname" class="form-control col ">
+                        </div>
+                        <div class = "row pb-2 ">
+                            <h5 class = "col-4" align="right">Email</h5>
+                            <div class="input-group  col p-0 m-0">
+                                <input type = text id = "Email" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">@gmail.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class = "row pb-2">
+                            <div class = "col-4"></div>
+                            <div class = "col">
+                                <button type="button" class="btn btn-primary pl-0 ml-0 mt-2 " id="accaunt_save" style = "margin-left: -10px; min-width: 158px;">Зберігти</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Второй блок -->
+                <div id = "PasswordSettings" class = "row justify-content-center pb-4 mb-4 pt-4 ">
+                    <div class = "PasswordInfo col-5 " id = "PasswordInfo">
+                        <div class = "row pb-2">
+                            <h5 class = "col-4" align="right" >Старий пароль</h5>
+                            <input type = password id = "oldPasswordInput" class="form-control col ">
+                        </div>
+                        <div class = "row pb-2">
+                            <h5 class = "col-4" align="right">Новий пароль</h5>
+                            <input type = password id = "newPasswordInput" class="form-control col ">
+                        </div>
+                        <div class = "row pb-2">
+                            <h5 class = "col-4" align="right">Підтвердіть пароль</h5>
+                            <input type = password id = "oldPasswordConfirmationInput" class="form-control col ">
+                        </div>
+                        <div class = "row pb-2">
+                            <div class = "col-4"></div>
+                            <div class = "col">
+                                <button type="button" class="btn btn-primary pl-0 ml-0 mt-2" id="password_save" style = "margin-left: -10px">Оновити пароль</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Третий блок -->
+                <div id = "DeleteSettings" class = "row justify-content-center pt-4 ">
+                    <div class = "PasswordInfo col-2 " id = "DeleteInfo">
+                        <div class = "row align-items-center pb-2">
+                            <div class = "col-5">
+                                <button type="button" class="btn  pl-0 ml-0 pb-1 pt-2 " id="delete_button"  onclick=AttempToDelete()  style = "margin-left: 14px; min-width: 400px; background-color: #e69889">
+                                    <i class="fas fa-user-slash" style="font-size: 22px; margin-right: 15px;"></i><span style = "font-size: 26px;">Видалити аккаунт</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content" >
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Підтвердіть дію</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick=CloseDialogWindow()></button>
+                            </div>
+                            <div class="modal-body" style="background-color: #e69889">
+                                <h3>Ви впевнені що бажаете видалити свій аккуунт?</h3>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick=CloseDialogWindow() style = "background-color: rgba(186, 186, 186, 0.98);">Відмінити</button>
+                                <button type="button" class="btn btn-primary" style="background-color: #e69889" onclick = DeleteHouseKeeper()>Видалити</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </main>
+    </div>
+</div>
+
+<!-- Reauired by Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+
+<!-- Cкрипт для возврата в окно регистрации -->
+<script src = "scripts/Exit.js"></script>
+
+<!-- Cкрипт для удаления елементов -->
+<script src = "scripts/DeleteElements.js"></script>
+
+<!-- Скрипт для обновления счетчика сообщений-->
+<script src = "scripts/UnreadLettersCount.js"></script>
+
+<script>
+
+    function Start()
+    {
+        GetUnreadLettersCount('LetterCounterText');
+    }
+
+    function AttempToDelete()
+    {
+        $("#exampleModal").modal('show');
+    }
+
+    function CloseDialogWindow() {
+        $("#exampleModal").modal('hide');
+    }
+
+    async function DeleteHouseKeeper()
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/delete-user/', {
+            method: 'POST',
+            headers: head
+        })
+            .then(response => response.json())
+            .then(LettersData => {
+                console.log('Success:', LettersData);
+
+                console.log(Deleted);
+                //Если закончилось время длительности токена
+                if(LettersData.error_message && LettersData.error_message.indexOf("token") !== -1)
+                {
+                    alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
+                    Exit();
+                }
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return true;
+    }
+
+</script>>
+
+
+
+</html>
