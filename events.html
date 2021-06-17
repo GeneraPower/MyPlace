@@ -103,7 +103,13 @@
                             <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="HouseKeeperLetters.html"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
+                            <a class="nav-link pl-0" href="HouseKeeperLetters.html">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <span class="d-none d-md-inline" style = "margin-right: 4px;">Перегляд листів</span>
+                                <span id = "LetterCounter" style="min-height: 20px; min-width: 20px; padding-right: 5px; padding-left: 2px; background-color: #e66548;  border-radius: 3px;">
+                                    <b id = "LetterCounterText"></b>
+                                </span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
@@ -241,6 +247,9 @@
 <!-- Cкрипт для удаления елементов -->
 <script src = "scripts/DeleteElements.js"></script>
 
+<!-- Скрипт для обновления счетчика сообщений-->
+<script src = "scripts/UnreadLettersCount.js"></script>
+
 <!-- Cкрипт для выбора дома и подъезда, после выбора подъезда выполняеться переданная в скрипт функция -->
 <script src = "scripts/SelectHousesAndPorches.js"></script>
 
@@ -304,6 +313,7 @@
 
     function Start()
     {
+        GetUnreadLettersCount('LetterCounterText');
     	document.getElementById('errorMessage').hidden = true;
         GetNews();
     }

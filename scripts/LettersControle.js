@@ -69,7 +69,7 @@ function EditLetter() {
             //Отправляем новые данные на сервер
             const temp_body =
                 {
-                    repty_text: document.getElementById('letter_reply').value,
+                    reply_text: document.getElementById('letter_reply').value,
                     reply_type: document.getElementById('option-1').checked
                 };
             console.log(temp_body);
