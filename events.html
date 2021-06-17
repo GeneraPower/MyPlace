@@ -271,12 +271,12 @@
 
     function ClearNewsEditor() {
 
-        document.getElementById('dialogTitle').innerHTML = "Вікно для додання новини";
+        document.getElementById('dialogTitle').innerHTML = "Вікно для додання події";
         document.getElementById("news_id").innerHTML = "";
         document.getElementById("news_house").innerHTML = "";
         document.getElementById("news_porch").innerHTML = "";
-        document.getElementById("localdateStart").innerHTML = "";
-        document.getElementById("localdateEnd").innerHTML = "";
+        document.getElementById("localdateStart").value = "";
+        document.getElementById("localdateEnd").value = "";
 
         var newsTitle = document.getElementById("news_title");
         newsTitle.value = "";
@@ -342,13 +342,15 @@
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
         	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0 && document.getElementById("localdateStart").value.length!=0 && document.getElementById("localdateEnd").value.length!=0 && document.getElementById("localdateStart").value<document.getElementById("localdateEnd").value){
+            let start = new Date(document.getElementById('localdateStart').value);
+            let end = new Date(document.getElementById('localdateEnd').value);
             const temp_body =
                 {
                     house_id: parseInt(localStorage.getItem("CreateNewsHouse_id")),
                     title: document.getElementById("news_title").value,
                     text: document.getElementById("news_body").value,
-                    date_start:document.getElementById("localdateStart").value,
-                    date_end:document.getElementById("localdateEnd").value
+                    date_start:start,
+                    date_end:end
                 };
             if(localStorage.getItem("CreateNewsPorchName") !== "null")
             {
@@ -631,14 +633,17 @@
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
+            console.log(document.getElementById("localdateStart").value);
             document.getElementById("localdateEnd").type = "text";
             document.getElementById("localdateStart").type = "text";
         	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0 && document.getElementById("localdateStart").value.length!=0 && document.getElementById("localdateEnd").value.length!=0 && document.getElementById("localdateStart").value<document.getElementById("localdateEnd").value){
             //Отправляем новые данные на сервер
+            let start = new Date(document.getElementById('localdateStart').value);
+            let end = new Date(document.getElementById('localdateEnd').value);
             const temp_body =
                 {
-                    date_start:document.getElementById('localdateStart').value,
-                    date_end:document.getElementById('localdateEnd').value,
+                    date_start:start,
+                    date_end:end,
                     title: document.getElementById('news_title').value,
                     text: document.getElementById('news_body').value
                 };
