@@ -394,6 +394,7 @@
         var elem2 = document.createElement("div");
         var elem3 = document.createElement("div");
         var elem4 = document.createElement("div");
+        var elem4_5 = document.createElement("div");
         var elem5 = document.createElement("div");
         var elem6 = document.createElement("div");
         elem1.style.marginLeft = "2px";
@@ -401,52 +402,53 @@
 
         elem1.style.width = "10%";
         elem2.style.width = "10%";
-        elem3.style.width = "20%";
-        elem4.style.width = "40%";
+        elem3.style.width = "30%";
+        elem4.style.width = "15%";
+        elem4_5.style.width = "15%";
         elem5.style.width = "10%";
         elem6.style.width = "10%";
         elem1.style.wordWrap = "break-word";
         elem2.style.wordWrap = "break-word";
         elem3.style.wordWrap = "break-word";
         elem4.style.wordWrap = "break-word";
+        elem4_5.style.wordWrap = "break-word";
         elem5.style.wordWrap = "break-word";
         elem6.style.wordWrap = "break-word";
         var pel1 = document.createElement("p");
         var pel2 = document.createElement("p");
         var pel3 = document.createElement("p");
         var pel4 = document.createElement("p");
+        var pel4_5 = document.createElement("p");
         var pel5 = document.createElement("p");
         var pel6 = document.createElement("p");
         pel1.style.textAlign = "center";
         pel2.style.textAlign = "center";
         pel3.style.textAlign = "center";
         pel4.style.textAlign = "center";
+        pel4_5.style.textAlign = "center";
         pel5.style.textAlign = "center";
         pel6.style.textAlign = "center";
         pel1.style.fontSize = "25px";
         pel2.style.fontSize = "25px";
         pel3.style.fontSize = "25px";
         pel4.style.fontSize = "25px";
+        pel4_5.style.fontSize = "25px";
         pel5.style.fontSize = "25px";
         pel6.style.fontSize = "25px";
-        pel1.style.fontFamily = "Century Gothic";
-        pel2.style.fontFamily = "Century Gothic";
-        pel3.style.fontFamily = "Century Gothic";
-        pel4.style.fontFamily = "Century Gothic";
-        pel5.style.fontFamily = "Century Gothic";
-        pel6.style.fontFamily = "Century Gothic";
 
 
         pel1.innerHTML = "Дім";
         pel2.innerHTML = "Під`їзд";
         pel3.innerHTML = "Заголовок";
-        pel4.innerHTML = "Текст новини";
+        pel4.innerHTML = "Початок";
+        pel4_5.innerHTML = "Кінець";
         pel5.innerHTML = "Редагувати";
         pel6.innerHTML = "Видалити";
         elem1.appendChild(pel1);
         elem2.appendChild(pel2);
         elem3.appendChild(pel3);
         elem4.appendChild(pel4);
+        elem4_5.appendChild(pel4_5);
         elem5.appendChild(pel5);
         elem6.appendChild(pel6);
 
@@ -454,6 +456,7 @@
         parBlock.appendChild(elem2);
         parBlock.appendChild(elem3);
         parBlock.appendChild(elem4);
+        parBlock.appendChild(elem4_5);
         parBlock.appendChild(elem5);
         parBlock.appendChild(elem6);
         document.getElementById("tableHeader").appendChild(parBlock);
