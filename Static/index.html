@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+</head>
+<body onload = Start()>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalTitle">Вхід до MyPlace</h5>
+
+        </div>
+        <div class="modal-body">
+        <form id="auth" action = "1.html" method = "post">
+            <div class="row mb-1">
+                <label for="InputEmail" class="col-sm-4 col-form-label">Введіть ваш Email</label>
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Пошта" aria-label="Пошта" id="InputEmail" form="auth" aria-describedby="basic-addon2">
+                        
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">@gmail.com</span>
+                        </div>
+                    </div>  
+                    <label id = "emailErr" class="col-sm-4 col-form-label" style = "display: none"></label>                 
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="InputPass" class="col-sm-5 col-form-label">Введіть ваш Пароль</label>
+                <div class="col-sm-12">
+                    <input type="password" class="form-control" id="InputPass" form="auth" placeholder="Пароль">
+                    <label id = "passwordErr" class="col-sm-4 col-form-label" style = "display: none"></label>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <input type="button" class="btn btn-success" value = "Відправити" onclick="SerlData()" >
+            </div>
+            <div id = "errorField" class = "text-center mb-0 pb-0" >
+                <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Невірний логін або пароль</p>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+
+<script>
+
+    function Start()
+    {
+        document.getElementById('errorMessage').hidden = true;
+    }
+    function SerlData()
+    {
+        const emailStr = document.getElementById('InputEmail').value;
+        const password = document.getElementById('InputPass').value;
+        const regex = /^\D+[^\s@!*&%$#()]+$/;
+        document.getElementById('emailErr').innerHTML = "" ;
+        document.getElementById('passwordErr').innerHTML = "" ;
+        if(emailStr.search(regex) !== -1 && password.length >= 8 && emailStr.length >= 6 && emailStr.length <= 30) { 
+            document.getElementById('emailErr').innerHTML = "" ;
+            document.getElementById('passwordErr').innerHTML = "" ;
+            let data = {
+                email: emailStr + "@gmail.com",
+                password: document.getElementById('InputPass').value
+            };
+            fetch('https://prp-project-server.herokuapp.com/house-keeper-auth/sign-in', {
+                method: 'POST',
+                headers: {"Content-type": "application/json; charset=UTF-8"},
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    localStorage.setItem('houseKeeperToken', data.house_keeper_token);
+                    if(!data.error_message) {
+                        document.location.href = "2.html";
+                    }
+                    else{
+                        document.getElementById('errorMessage').hidden = false;
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        else if(emailStr.length < 6 || emailStr.length > 30)
+        {
+            let label = document.getElementById('emailErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('emailErr').innerHTML = "Довжина email від 6 до 30 символів" ;
+        }
+        else 
+        {
+            let label = document.getElementById('passwordErr');
+            label.style.display = "inline";
+            label.style.color = "#e66548";
+            document.getElementById('passwordErr').innerHTML = "Довжина паролю від 8 символів" ;
+        }
+    }
+</script>
+</html>

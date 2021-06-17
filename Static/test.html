@@ -16,11 +16,8 @@
 
     <style>
         /* Кнопки стиля */
-        body{
-        	font-family:Century Gothic;
-        }
         .btn {
-            background-color: #A0CDE8; /* Синий фон */
+            background-color: #9be3e6; /* Синий фон */
             border: none;
             color: white;
             padding: 12px 16px;
@@ -76,11 +73,6 @@
             margin-top: 2px;
             height: calc(100vh - 250px);
         }
-        .editorLabel
-        {
-        	font-family:Century Gothic;
-        	font-size: 20px;
-        }
 
     </style>
 
@@ -94,22 +86,16 @@
                 <div class="collapse navbar-collapse aside_header__inner">
                     <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                         <li class="nav-item">
-                            <a class="nav-link pl-0 text-nowrap" href="2.html"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
+                            <a class="nav-link pl-0 text-nowrap" href="#"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="fundraisings.html"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="HouseKeeperLetters.html">
-                                <i class="fas fa-envelope-open-text"></i>
-                                <span class="d-none d-md-inline" style = "margin-right: 4px;">Перегляд листів</span>
-                                <span id = "LetterCounter" style="min-height: 20px; min-width: 20px; padding-right: 5px; padding-left: 2px; background-color: #e66548;  border-radius: 3px;">
-                                    <b id = "LetterCounterText"></b>
-                                </span>
-                            </a>
+                            <a class="nav-link pl-0" href="#"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
@@ -126,7 +112,7 @@
                 <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
             </header>
 
-            <p><h3 class = "text-center">Перелік пов'язаних подій</h3></p>
+            <p><h3 class = "text-center">Перелік пов'язаних новин</h3></p>
 
             <div id = "addButtonArea" class = "addButtonArea">
                 <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" ><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
@@ -145,24 +131,20 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header pb-0 pt-0">
-                            <h4 class="modal-title" id="dialogTitle">Вікно для додання події</h4>
+                            <h4 class="modal-title" id="dialogTitle">Вікно для додання новини</h4>
                             <button type="button" class="close btnXmark " onclick='CloseDialogWindow()' aria-label="Close">
                                 <span aria-hidden="true" style = "font-size: 50px">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" id = "ModalBody">
                             <div id = "news_editor" style="min-width: 500px; display: flex; flex-direction: column; ">
-                                <label id = "news_id" class = "editorLabel" >ID події:</label>
-                                <label id = "news_house" class = "editorLabel">Дім:</label>
-                                <label id = "news_porch" class = "editorLabel">Під`їзд:</label>
-                                <label id = "news_porch" class = "editorLabel">Початок події:</label>
-                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateStart">
-                                <label id = "news_porch" class = "editorLabel">Завершення події:</label>
-                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateEnd">
-                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Заголовок події </label>
-                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок" class="editorLabel"></textarea>
-                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Текст події </label>
-                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
+                                <label id = "news_id">ID новини:</label>
+                                <label id = "news_house">Дом:</label>
+                                <label id = "news_porch">Під`їзд:</label>
+                                <label> Заголовок новини </label>
+                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок"></textarea>
+                                <label> Текст новини </label>
+                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px" placeholder="Текст"></textarea>
 
                                 <div id="carouselExampleControls" class="carousel slide pt-4" data-ride="carousel" >
                                     <div class="carousel-inner"  id = "carousel-body">
@@ -179,10 +161,7 @@
                                 <div id = "input_placer" class="row container p-0 m-0 pt-4">
 
                                 </div>
-                                <button type="button" style="background-color: #9EDC9B" class="btn btn-secondary" id="news_add_image" onclick='AddImageField(imageNeededParams)'>Додати зображення</button>
-                                <div id = "errorField" class = "text-center mb-0 pb-0" >
-                					<p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Усі поля повинні бути заповнені</p>
-            					</div>
+                                <button type="button" class="btn btn-secondary" id="news_add_image" onclick='AddImageField()'>Додати зображення</button>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -205,53 +184,175 @@
 
 </body>
 
-<!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ ПОБОТЫ ФУНКЦИЙ -->
-<script>
-    // Параметры дла работы с картинками (AddImageField)
-    let imageNeededParams =
-        {
-            inputHolderId : 'input_placer',         // Место для размещения инпутов
-            carouselBodyId : 'carousel-body'        // Место для размещения carousel-item
-        };
-
-    // Параметры дла роботы с локальным хранилищем
-    let localStorageParams = {
-        HouseId: "CreateNewsHouse_id",              // Id выбраного дома (при создании новости)
-        HouseName: "CreateNewsHouseName",           // Name выбраного дома (при создании новости)
-        PorchId: "CreateNewsPorch_id",              // Id выбраного подъезда (при создании новости)
-        PorchName: "CreateNewsPorchName",           // Name выбраного подъезда (при создании новости)
-        HouseKeeperToken: "houseKeeperToken"        // Токен домовладельца
-    };
-
-    // Параметры модального окна
-    let modalWindowParams = {
-        modalHeaderTitleId: 'dialogTitle',          // ID заголовка модального окна
-        modalBodyDivId: 'ModalBody',                //  ID тела модального окна
-        modalEditorDivId:'news_editor' ,            // ID div с содержимым модального окна
-    };
-
-    //Обьект для что содержит все новости домоуправленца
-    let data = {};
-
-
-
-
-</script>
-
 <!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
-<script src = "scripts/ImageControl.js"></script>
+<script>
 
-<!-- Cкрипт для возврата в окно регистрации -->
-<script src = "scripts/Exit.js"></script>
+    let img_counter = 0; // счётчик для уникальности полей id
+    function AddImageField(imgSource = "") {
+        let canAdd = true;
 
-<!-- Cкрипт для удаления елементов -->
-<script src = "scripts/DeleteElements.js"></script>
+        //проверяем заполненны ли предыдушие поля для картинок
+        curr_fields = document.getElementsByName("imageField");
+        for (i = 0; i < curr_fields.length; i++) {
 
-<!-- Скрипт для обновления счетчика сообщений-->
-<script src = "scripts/UnreadLettersCount.js"></script>
+            //if (curr_fields[i].value === "") {
+            if (curr_fields[i].readOnly === false) {
+                canAdd = false;
+                alert("Empty imgage field. Field #" + (i + 1));
+                break;
+            }
+        }
 
-<!-- Cкрипт для выбора дома и подъезда, после выбора подъезда выполняеться переданная в скрипт функция -->
-<script src = "scripts/SelectHousesAndPorches.js"></script>
+        // Добавляем новое текстовое поле для ссылки на картинку
+        if (canAdd) {
+            let temp_counter_val =img_counter;
+
+            t_div = document.createElement('div');
+            t_div.className = "d-flex justify-content-between m-0 p-0";
+            t_div.id = "helperImageDiv" + temp_counter_val;
+
+            temp_inp = document.createElement('input');
+            temp_inp.type = "text";
+            temp_inp.name = "imageField";
+            temp_inp.placeholder = placeholder = "Лінк на зображення";
+            temp_inp.className = "col-8 mb-4";
+            temp_inp.id = "imageField" + temp_counter_val;
+
+
+            temp_inp.oninput = function () {
+                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
+            };
+
+            delete_butt = document.createElement('button');
+            delete_butt.className="col-3  mb-4 btn btn-danger";
+            delete_butt.style.backgroundColor = "#e69889";
+            delete_butt.innerHTML = "Видалити";
+            delete_butt.id = "deleteImageButton" + temp_counter_val;
+            delete_butt.onclick = function()
+            {
+                //alert(parseInt(this.id.substring(17)));
+                DeleteImageInfo(temp_counter_val, "helperImageDiv" + parseInt(this.id.substring(17))); // 17-- кол-во символов в "helperImageDiv"
+            };
+
+
+            news_body = document.getElementById('input_placer');
+            t_div.appendChild(temp_inp);
+            t_div.appendChild(delete_butt);
+            news_body.appendChild(t_div);
+
+            //Используеться при обновлении уже созданных новостей
+            // imgSource --> ссылка на картинку
+            if(imgSource !== "")
+            {
+                //Вставляем ссылку и блокируем инпут
+                temp_inp.value = imgSource;
+                temp_inp.readOnly = true;
+                temp_inp.style.backgroundColor = "lightGrey";
+
+                addImages(temp_inp.value, temp_counter_val, temp_inp.id);
+            }
+
+        }
+        img_counter+= 1;
+    }
+
+    function DeleteImageInfo(index, helperDiv_id)
+    {
+
+        img_div = document.getElementById("imgDiv" + index);
+        if(img_div != null) {
+            if (img_div.className !== "carousel-item active") {
+                img_div.remove();
+            }else {
+                divs = document.getElementById('carousel-body').children;
+                for (i = 0; i < divs.length; i++) {
+
+                    if (divs[i].className !== "carousel-item active") {
+                        divs[i].className = "carousel-item active";
+                        break;
+                    }
+                }
+                img_div.remove();
+            }
+        }
+
+        t_div = document.getElementById(helperDiv_id);
+        t_div.remove();
+    }
+
+    function addImages(src, index, input_id)
+    {
+        //Блокируем соответствубщий инпут с ссылкой на картинку
+        input = document.getElementById(input_id);
+        input.readOnly = true;
+        input.style.backgroundColor = "lightGrey";
+
+
+        car_body = document.getElementById('carousel-body');
+
+        //Если емелента еще не существует
+        if(!document.getElementById("imgDiv" + index)) {
+            img_div = document.createElement('div');
+            img_div.name = "imgDiv";
+            img_div.id = "imgDiv" + index;
+
+            img = document.createElement('img');
+            img.className = "d-block w-100";
+            img.id = "imgImg" + index;
+            img.height = 300;
+            img.onerror = function () {
+                img.src = "https://www.aubreydaniels.com/sites/default/files/default_images/x2017-05-15_5.png.pagespeed.ic.tLD9q0ZZph.png";
+            };
+
+            // запрашиваем картинку
+            img.src = src;
+
+            img_div.appendChild(img);
+            car_body.appendChild(img_div);
+        }
+        else {
+            //не вызываеться так как ставим свойство readonly = true
+            /*
+            // Обновляем существующию картинку
+            img_div = document.getElementById("imgDiv" + index);
+            img = document.getElementById("imgImg" + index);
+
+            // запрашиваем картинку
+            img.src = src;
+            console.log("updated");
+            $('.carousel').carousel();
+
+             */
+        }
+
+        //Следим что бы был ровно 1 carousel-item active
+        var temp = document.getElementsByClassName('carousel-item active');
+        if(temp.length === 0) {
+            img_div.className = "carousel-item active";
+        }
+        else{
+            if(temp[0].id !== img_div.id) {
+                img_div.className = "carousel-item";
+            }
+        }
+
+        SetActive(img_div.id);
+    }
+
+    function SetActive(imgDiv_id){
+
+        var img_div = document.getElementById(imgDiv_id);
+        img_div.className = "carousel-item active";
+
+        divs = document.getElementById('carousel-body').children;
+        for (i = 0; i < divs.length; i++) {
+
+            if (divs[i].id !== imgDiv_id) {
+                divs[i].className = "carousel-item";
+            }
+        }
+    }
+</script>
 
 <script>
 
@@ -269,7 +370,6 @@
     });
 
     function CloseDialogWindow() {
-    	document.getElementById('errorMessage').hidden = true;
         $("#NewsModalWindow").modal('hide');
     }
 
@@ -280,12 +380,10 @@
 
     function ClearNewsEditor() {
 
-        document.getElementById('dialogTitle').innerHTML = "Вікно для додання події";
+        document.getElementById('dialogTitle').innerHTML = "Вікно для додання новини";
         document.getElementById("news_id").innerHTML = "";
         document.getElementById("news_house").innerHTML = "";
         document.getElementById("news_porch").innerHTML = "";
-        document.getElementById("localdateStart").value = "";
-        document.getElementById("localdateEnd").value = "";
 
         var newsTitle = document.getElementById("news_title");
         newsTitle.value = "";
@@ -301,37 +399,190 @@
         };
 
         //Удаляем информацию для роботы с картинками
-        DeleteChildren(imageNeededParams.carouselBodyId);
-        DeleteChildren(imageNeededParams.inputHolderId);
+        DeleteChildren('carousel-body');
+        DeleteChildren('input_placer');
 
         document.getElementById("news_id").hidden = false;
         document.getElementById('news_editor').hidden = false;
     }
 </script>
-
 <script>
+
+    function Exit()
+    {
+        localStorage.clear();
+        document.location.href = "index.html";
+    }
+
+    let data = {};
+
 
     function Start()
     {
-        GetUnreadLettersCount('LetterCounterText');
-    	document.getElementById('errorMessage').hidden = true;
         GetNews();
     }
 
     function OpenDialog() {
-
-        SelectHousesAndPorches(true, modalWindowParams, localStorageParams, ShowModalEditor);
+        GetHouses();
         ShowDialogWindow();
     }
 
+    //Добавляем выбор домов в диалоговом окне
+    function SelectHouses()
+    {
+        //Заполняем объект houses
+        console.log("Данные для SelectHouses(): " + housesData);
 
+        //Скрываем елементы для добавления новости
+        document.getElementById('news_editor').hidden = true;
+
+        modal = document.getElementById('ModalBody');
+
+        // добавляем область для домов
+        var houseContainer = document.createElement("div");
+        houseContainer.className = "container-fluid list-group p-0 m-0";
+        houseContainer.id = "houseContainer0";
+
+        modal.appendChild(houseContainer);
+
+        //добавляем надпись
+        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний будинок:";
+
+        //добавляем дома
+        // k == idДома
+        for(var k in housesData.houses)
+        {
+            var houseElement = document.createElement("div");
+
+            houseElement.className = "list-group-item list-group-item-action border-2 pt-0";
+            houseElement.style.minHeight = "100px";
+            houseElement.style.height = "100px";
+            houseElement.style.maxWidth = "795px";
+            houseElement.style.backgroundColor = "rgba(255,164,51,0.73)";
+            houseElement.style.borderColor = "rgba(0,0,0,0.73)";
+            houseElement.onmouseover = function(){
+                this.style.backgroundColor = "rgba(201,134,38,0.73)";
+            };
+            houseElement.onmouseleave = function(){
+                this.style.backgroundColor = "rgba(255,164,51,0.73)";
+            };
+
+            houseElement.id = "houseElement" + k;
+            houseElement.name = k;
+            houseElement.onclick = function()
+            {
+                localStorage.setItem("CreateNewsHouse_id", this.name);
+                localStorage.setItem("CreateNewsHouseName", this.children[0].innerHTML);
+                DeleteElement(houseElement.parentElement.id);
+                GetPorches(this.name);
+            };
+
+            var houseName = document.createElement("h4");
+            houseName.style.textAlign = "left";
+            houseName.style.paddingTop = (parseInt(houseElement.style.height) / 3 ) + "px";
+            houseName.style.alignSelf = "center";
+            houseName.innerHTML = housesData.houses[k].house_number;
+
+            houseElement.appendChild(houseName);
+            houseContainer.appendChild(houseElement);
+        }
+    }
+
+    function DeleteElement(ElementId)
+    {
+        var el = document.getElementById(ElementId);
+
+        var child = el.lastElementChild;
+        while(child)
+        {
+            el.removeChild(child);
+            child = el.lastElementChild;
+        }
+        el.remove();
+
+    }
+
+    function SelectPorches()
+    {
+        modal = document.getElementById('ModalBody');
+
+        // добавляем область для подъездов
+        var porchContainer = document.createElement("div");
+        porchContainer.className = "container-fluid  p-0 m-0";
+        porchContainer.id = "porchContainer0";
+
+        modal.appendChild(porchContainer);
+
+        //добавляем надпись
+        document.getElementById('dialogTitle').innerHTML = "Оберіть необхідний під`їзд";
+
+        //добавляем кнопку для создания новости
+        var porchCreateButton = document.createElement("button");
+        porchCreateButton.id = "porchCreateButton";
+        porchCreateButton.innerHTML = "Додати новину до " + localStorage.getItem('CreateNewsHouseName');
+        porchCreateButton.className = "btn btnAdd mb-4 ";
+        porchCreateButton.style.fontSize = "20px";
+        porchCreateButton.onclick = function()
+        {
+            localStorage.setItem("CreateNewsporch_id", "null");
+            localStorage.setItem("CreateNewsPorchName", "null");
+            DeleteElement(porchContainer.id);
+            ShowModalEditor();
+        };
+        porchContainer.appendChild(porchCreateButton);
+
+        var porchDivsContainer = document.createElement("div");
+        porchDivsContainer.className = "container-fluid list-group p-0 m-0";
+        porchDivsContainer.id = "porchDivsContainer0";
+
+        //добавляем подъезды
+        //k == News_id
+        let firstElem = true;
+        for(var k in porchesData.porches)
+        {
+            var porchElement = document.createElement("div");
+            porchElement.className = "list-group-item list-group-item-action border-2 pt-0";
+            porchElement.style.height = "100px";
+            porchElement.style.maxWidth = "795px";
+            porchElement.style.backgroundColor = "rgba(255,198,98,0.73)";
+            porchElement.style.borderColor = "rgba(0,0,0,0.73)";
+            porchElement.onmouseover = function(){
+                this.style.backgroundColor = "rgba(205,154,81,0.73)";
+            };
+            porchElement.onmouseleave = function(){
+                this.style.backgroundColor = "rgba(255,198,98,0.73)";
+            };
+
+
+            porchElement.id = "porchElement" + k;
+            porchElement.name = k;
+            porchElement.onclick = function()
+            {
+                localStorage.setItem("CreateNewsPorch_id", this.name);
+                localStorage.setItem("CreateNewsPorchName", this.children[0].innerHTML);
+                DeleteElement(porchContainer.id);
+                ShowModalEditor();
+            };
+
+
+            var porchName = document.createElement("h4");
+            porchName.style.textAlign = "left";
+            porchName.style.paddingTop = (parseInt(porchElement.style.height) / 3 ) + "px";
+            porchName.style.alignSelf = "center";
+            porchName.innerHTML = porchesData.porches[k].porch_name;
+
+            porchElement.appendChild(porchName);
+            porchDivsContainer.appendChild(porchElement);
+            porchContainer.appendChild(porchDivsContainer);
+        }
+    }
 
     //Отображает в диалоговом окне поля для создания новости
     function ShowModalEditor()
     {
-        document.getElementById('dialogTitle').innerHTML="Додавання події";
+        document.getElementById('dialogTitle').innerHTML="Додавання новини";
         document.getElementById("news_id").hidden = true;
-        document.getElementById("news_house").innerHTML = "Дім: " + localStorage.getItem("CreateNewsHouseName");
+        document.getElementById("news_house").innerHTML = "Дом: " + localStorage.getItem("CreateNewsHouseName");
         if(localStorage.getItem("CreateNewsPorchName") !== "null") {
             document.getElementById("news_porch").innerHTML = "Під`їзд: " + localStorage.getItem("CreateNewsPorchName");
         }
@@ -346,21 +597,14 @@
         var newsBody = document.getElementById("news_body");
         newsBody.value = "";
         newsBody.placeholder = "Текст";
-        document.getElementById("localdateStart").value = "";
-        document.getElementById("localdateEnd").value = "";
 
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
-        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0 && document.getElementById("localdateStart").value.length!=0 && document.getElementById("localdateEnd").value.length!=0 && document.getElementById("localdateStart").value<document.getElementById("localdateEnd").value){
-            let start = new Date(document.getElementById('localdateStart').value);
-            let end = new Date(document.getElementById('localdateEnd').value);
             const temp_body =
                 {
                     house_id: parseInt(localStorage.getItem("CreateNewsHouse_id")),
                     title: document.getElementById("news_title").value,
-                    text: document.getElementById("news_body").value,
-                    date_start:start,
-                    date_end:end
+                    text: document.getElementById("news_body").value
                 };
             if(localStorage.getItem("CreateNewsPorchName") !== "null")
             {
@@ -368,20 +612,16 @@
             }
             // Берем ссылки на картинки
             var temp_obj = [];
-            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
+            divs = document.getElementById('carousel-body').children;
             for (i = 0; i < divs.length; i++) {
                 temp_obj[i] = divs[i].children[0].src;
             }
             temp_body.images = temp_obj;
             console.log("ok");
             console.log(temp_body);
-			document.getElementById('errorMessage').hidden = true;
-            console.log("done")
+
             AddNews(temp_body);
             CloseDialogWindow();
-        }else{
-        	document.getElementById('errorMessage').hidden = false;
-        }
 
         };
         document.getElementById('news_editor').hidden = false;
@@ -404,7 +644,6 @@
         var elem2 = document.createElement("div");
         var elem3 = document.createElement("div");
         var elem4 = document.createElement("div");
-        var elem4_5 = document.createElement("div");
         var elem5 = document.createElement("div");
         var elem6 = document.createElement("div");
         elem1.style.marginLeft = "2px";
@@ -412,53 +651,52 @@
 
         elem1.style.width = "10%";
         elem2.style.width = "10%";
-        elem3.style.width = "30%";
-        elem4.style.width = "15%";
-        elem4_5.style.width = "15%";
+        elem3.style.width = "20%";
+        elem4.style.width = "40%";
         elem5.style.width = "10%";
         elem6.style.width = "10%";
         elem1.style.wordWrap = "break-word";
         elem2.style.wordWrap = "break-word";
         elem3.style.wordWrap = "break-word";
         elem4.style.wordWrap = "break-word";
-        elem4_5.style.wordWrap = "break-word";
         elem5.style.wordWrap = "break-word";
         elem6.style.wordWrap = "break-word";
         var pel1 = document.createElement("p");
         var pel2 = document.createElement("p");
         var pel3 = document.createElement("p");
         var pel4 = document.createElement("p");
-        var pel4_5 = document.createElement("p");
         var pel5 = document.createElement("p");
         var pel6 = document.createElement("p");
         pel1.style.textAlign = "center";
         pel2.style.textAlign = "center";
         pel3.style.textAlign = "center";
         pel4.style.textAlign = "center";
-        pel4_5.style.textAlign = "center";
         pel5.style.textAlign = "center";
         pel6.style.textAlign = "center";
         pel1.style.fontSize = "25px";
         pel2.style.fontSize = "25px";
         pel3.style.fontSize = "25px";
         pel4.style.fontSize = "25px";
-        pel4_5.style.fontSize = "25px";
         pel5.style.fontSize = "25px";
         pel6.style.fontSize = "25px";
+        pel1.style.fontFamily = "Century Gothic";
+        pel2.style.fontFamily = "Century Gothic";
+        pel3.style.fontFamily = "Century Gothic";
+        pel4.style.fontFamily = "Century Gothic";
+        pel5.style.fontFamily = "Century Gothic";
+        pel6.style.fontFamily = "Century Gothic";
 
 
         pel1.innerHTML = "Дім";
         pel2.innerHTML = "Під`їзд";
         pel3.innerHTML = "Заголовок";
-        pel4.innerHTML = "Початок";
-        pel4_5.innerHTML = "Кінець";
+        pel4.innerHTML = "Текст новини";
         pel5.innerHTML = "Редагувати";
         pel6.innerHTML = "Видалити";
         elem1.appendChild(pel1);
         elem2.appendChild(pel2);
         elem3.appendChild(pel3);
         elem4.appendChild(pel4);
-        elem4_5.appendChild(pel4_5);
         elem5.appendChild(pel5);
         elem6.appendChild(pel6);
 
@@ -466,13 +704,22 @@
         parBlock.appendChild(elem2);
         parBlock.appendChild(elem3);
         parBlock.appendChild(elem4);
-        parBlock.appendChild(elem4_5);
         parBlock.appendChild(elem5);
         parBlock.appendChild(elem6);
         document.getElementById("tableHeader").appendChild(parBlock);
     }
 
+    function DeleteChildren(ElementId)
+    {
+        var el = document.getElementById(ElementId);
 
+        var child = el.lastElementChild;
+        while(child)
+        {
+            el.removeChild(child);
+            child = el.lastElementChild;
+        }
+    }
 
     function FillNews(){
 
@@ -481,8 +728,9 @@
 
         //Удаляем элементы при повторном отображении
         DeleteChildren('content');
+
         let first = true;
-        for(var key in data.events){
+        for(var key in data.news){
 
             var parBlock = document.createElement("div");
             parBlock.style.display = "flex";
@@ -501,7 +749,6 @@
             var elem2 = document.createElement("div");
             var elem3 = document.createElement("div");
             var elem4 = document.createElement("div");
-            var elem4_5 = document.createElement("div");
             var elem5 = document.createElement("div");
             var elem6 = document.createElement("div");
             elem1.style.marginLeft = "2px";
@@ -511,41 +758,34 @@
             elem2.style.outline = "2px solid #000";
             elem3.style.outline = "2px solid #000";
             elem4.style.outline = "2px solid #000";
-            elem4_5.style.outline = "2px solid #000";
 
             elem1.style.backgroundColor = "rgba(255,164,51,0.73)";
             elem2.style.backgroundColor = "rgba(255,164,51,0.73)";
             elem3.style.backgroundColor = "rgba(255,164,51,0.73)";
             elem4.style.backgroundColor = "rgba(255,164,51,0.73)";
-            elem4_5.style.backgroundColor = "rgba(255,164,51,0.73)";
 
             elem1.style.width = "10%";
             elem2.style.width = "10%";
-            elem3.style.width = "30%";
-            elem4.style.width = "15%";
-            elem4_5.style.width = "15%";
+            elem3.style.width = "20%";
+            elem4.style.width = "40%";
             elem5.style.width = "10%";
             elem6.style.width = "10%";
             elem1.style.wordWrap = "break-word";
             elem2.style.wordWrap = "break-word";
             elem3.style.wordWrap = "break-word";
             elem4.style.wordWrap = "break-word";
-            elem4_5.style.wordWrap = "break-word";
             elem5.style.wordWrap = "break-word";
             elem6.style.wordWrap = "break-word";
             var pel1 = document.createElement("p");
             var pel2 = document.createElement("p");
             var pel3 = document.createElement("p");
             var pel4 = document.createElement("p");
-            var pel4_5 = document.createElement("p");
             var pel5 = document.createElement("button");
             var pel6 = document.createElement("button");
             pel3.id="title"+key;
             pel3.name = key;
             pel4.id="text"+key;
-            pel4_5.id="text"+key;
             pel4.name = key;
-            pel4_5.name = key;
             pel5.style.marginLeft="20%";
             pel5.style.marginTop="5%";
             pel6.style.marginTop="5%";
@@ -558,7 +798,6 @@
             pel2.style.textAlign = "center";
             pel3.style.textAlign = "center";
             pel4.style.textAlign = "center";
-            pel4_5.style.textAlign = "center";
             pel5.style.textAlign = "center";
             pel6.style.textAlign = "center";
             pel1.style.fontFamily = "Century Gothic";
@@ -566,7 +805,11 @@
             pel2.style.fontSize = "20px";
             pel3.style.fontSize = "20px";
             pel4.style.fontSize = "20px";
-            pel4_5.style.fontSize = "20px";
+            pel2.style.fontFamily = "Century Gothic";
+            pel3.style.fontFamily = "Century Gothic";
+            pel4.style.fontFamily = "Century Gothic";
+            pel5.style.fontFamily = "Century Gothic";
+            pel6.style.fontFamily = "Century Gothic";
 
             pel5.innerHTML = "<i class='fas fa-pen-square' style = 'font-size: 28px;'></i>";
             pel5.className = "btn";
@@ -589,27 +832,19 @@
             };
 
             // Вывод локации и номер дома
-            pel1.innerHTML = data.events[key]['house_location'] + ' ' +data.events[key]['house_number'];
+            pel1.innerHTML = data.news[key]['house_location'] + ' ' +data.news[key]['house_number'];
             // Проверка на наличие подьезда
-            if(data.events[key]['porch_name'] == null){
+            if(data.news[key]['porch_name'] == null){
                 pel2.innerHTML = 'Усі мешканці'
             } else {
-                pel2.innerHTML = data.events[key]['porch_name'];
+                pel2.innerHTML = data.news[key]['porch_name'];
             }
-            pel3.innerHTML = (data.events[key]['title'].length > 50) ? data.events[key]['title'].substr(0,50) + "..." : data.events[key]['title'];
-            let d = new Date( data.events[key]['date_start']);
-            var start = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-            d = new Date( data.events[key]['date_end']);
-            var end = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-            pel4.innerHTML = start;
-            pel4_5.innerHTML = end;
+            pel3.innerHTML = data.news[key]['title'];
+            pel4.innerHTML = data.news[key]['text'];
             elem1.appendChild(pel1);
             elem2.appendChild(pel2);
             elem3.appendChild(pel3);
             elem4.appendChild(pel4);
-            elem4_5.appendChild(pel4_5);
             elem5.appendChild(pel5);
             elem6.appendChild(pel6);
 
@@ -617,7 +852,6 @@
             parBlock.appendChild(elem2);
             parBlock.appendChild(elem3);
             parBlock.appendChild(elem4);
-            parBlock.appendChild(elem4_5);
             parBlock.appendChild(elem5);
             parBlock.appendChild(elem6);
             document.getElementById("content").appendChild(parBlock);
@@ -626,33 +860,21 @@
 
     function EditNews() {
         console.log(oneNewsData.news.news_id);
-        console.log(oneNewsData.news.date_start);
+        console.log("^^^");
 
-        document.getElementById('news_id').innerHTML = "ID Новини: " + oneNewsData.news.news_id;
+        document.getElementById('news_id').innerHTML = "ID Новини:" + oneNewsData.news.news_id;
         document.getElementById('news_id').name = oneNewsData.news.news_id;
         document.getElementById('news_title').value = oneNewsData.news.title;
         document.getElementById('news_body').value = oneNewsData.news.text;
         document.getElementById('news_house').innerHTML = "Дім: " + oneNewsData.news.house_number;
-        document.getElementById('localdateStart').type = "text";
-        document.getElementById('localdateEnd').type = "text";
-        let d = new Date(oneNewsData.news.date_start);
-        var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-        document.getElementById('localdateStart').value = datestring;
 
-        d= new Date(oneNewsData.news.date_end);
-        datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
-        document.getElementById('localdateEnd').value = datestring;
+        document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Новина для усього будинку";
+        document.getElementById('dialogTitle').innerHTML = "Редагування новини";
 
-        document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Подія для усього будинку";
-        document.getElementById('dialogTitle').innerHTML = "Редагування події";
-        document.getElementById('localdateStart').type = "text";
-        document.getElementById('localdateEnd').type = "text";
         //Учитываем картинки
         if(oneNewsData.images !== null) {
             for (let i = 0; i < oneNewsData.images.length; i++) {
-                AddImageField(imageNeededParams, oneNewsData.images[i]);
+                AddImageField(oneNewsData.images[i]);
             }
             console.log(oneNewsData.images.length);
         }
@@ -660,23 +882,15 @@
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
-            console.log(document.getElementById("localdateStart").value);
-            document.getElementById("localdateEnd").type = "text";
-            document.getElementById("localdateStart").type = "text";
-        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0 && document.getElementById("localdateStart").value.length!=0 && document.getElementById("localdateEnd").value.length!=0 && document.getElementById("localdateStart").value<document.getElementById("localdateEnd").value){
             //Отправляем новые данные на сервер
-            let start = new Date(document.getElementById('localdateStart').value);
-            let end = new Date(document.getElementById('localdateEnd').value);
             const temp_body =
                 {
-                    date_start:start,
-                    date_end:end,
                     title: document.getElementById('news_title').value,
                     text: document.getElementById('news_body').value
                 };
             // Берем ссылки на картинки
             var temp_obj = [];
-            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
+            divs = document.getElementById('carousel-body').children;
             for (i = 0; i < divs.length; i++) {
                 temp_obj[i] = divs[i].children[0].src;
             }
@@ -684,13 +898,9 @@
 
             console.log("temmpmpmp");
             console.log(temp_body);
-            document.getElementById('errorMessage').hidden = true;
             await UpdateNews(oneNewsData.news.news_id, temp_body);
 
             CloseDialogWindow();
-        } else{
-        	document.getElementById('errorMessage').hidden = false;
-        }
         };
 
         //отображаем текущюю информацию о новости
@@ -699,13 +909,14 @@
 
     async function GetNews()
     {
+
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
                 'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
             };
 
-        fetch('https://prp-project-server.herokuapp.com/api/events/', {
+        fetch('https://prp-project-server.herokuapp.com/api/news/', {
             method: 'GET',
             headers: head
         })
@@ -731,7 +942,6 @@
     oneNewsData = {};
     async function GetOneNews(news_id)
     {
-        console.log(news_id);
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -754,7 +964,53 @@
         return true;
     }
 
+    var housesData = {};
+    function GetHouses()
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
 
+        fetch('https://prp-project-server.herokuapp.com/api/house/', {
+            method: 'GET',
+            headers: head,
+        })
+            .then(response => response.json())
+            .then(HousesData => {
+                console.log('Success:', HousesData);
+                housesData= HousesData;
+                SelectHouses();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    var porchesData = {};
+    function GetPorches(houseId)
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/porch/' + houseId, {
+            method: 'GET',
+            headers: head,
+        })
+            .then(response => response.json())
+            .then(Data => {
+                console.log('Success:', Data);
+                porchesData = Data;
+                SelectPorches();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     function DeleteNews(newsId)
     {

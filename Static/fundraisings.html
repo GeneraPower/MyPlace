@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Библиотека с иконками -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+          integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <style>
+        /* Кнопки стиля */
+        body{
+            font-family:Century Gothic;
+        }
+        .btn {
+            background-color: #A0CDE8; /* Синий фон */
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover{
+            background-color: #79b5b8;
+        }
+        .btnDel {
+            background-color: #e69889;
+        }
+        .btnDel:hover {
+            background-color: #c47f72;
+        }
+        .btnAdd {
+            background-color: #b8e6a2;
+            min-width: 300px;
+            min-height: 60px;
+        }
+        .btnAdd:hover {
+            background-color: #98c287;
+        }
+        .btnClose {
+            padding: 12px 16px;
+            background-color: rgba(186, 186, 186, 0.98);
+        }
+        .btnClose:hover {
+            background-color: rgba(127, 127, 127, 0.98);
+        }
+        .btnXmark
+        {
+            background-color: transparent; /* Синий фон */
+            border: none;
+        }
+
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .addButtonArea
+        {
+            margin-left: 20px;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: left;
+            margin-bottom: -50px;
+            margin-right: 12px;
+        }
+        .gridContent
+        {
+            display: block;overflow-y: scroll;
+            margin-top: 2px;
+            height: calc(100vh - 250px);
+        }
+        .editorLabel
+        {
+            font-family:Century Gothic;
+            font-size: 20px;
+        }
+
+    </style>
+
+</head>
+<body onLoad="Start()">
+
+<div class="container-fluid">
+    <div class="row min-vh-100 flex-column flex-md-row">
+        <aside class="col-12 col-md-2 p-0 bg-dark flex-shrink-1">
+            <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2 sticky-top ">
+                <div class="collapse navbar-collapse aside_header__inner">
+                    <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                        <li class="nav-item">
+                            <a class="nav-link pl-0 text-nowrap" href="2.html"><i class="far fa-newspaper"></i> <span class="font-weight-bold">Новини</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="fundraisings.html"><i class="fas fa-hand-holding-usd"></i> <span class="d-none d-md-inline">Збори коштів</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="HouseKeeperLetters.html">
+                                <i class="fas fa-envelope-open-text"></i>
+                                <span class="d-none d-md-inline" style = "margin-right: 4px;">Перегляд листів</span>
+                                <span id = "LetterCounter" style="min-height: 20px; min-width: 20px; padding-right: 5px; padding-left: 2px; background-color: #e66548;  border-radius: 3px;">
+                                    <b id = "LetterCounterText"></b>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+
+        <main class="col-12 col-md-10 bg-faded flex-grow-1 p-0">
+
+            <header class = "row-fluid pt-3 pb-3  sticky-top" style="background-color: slategrey"  >
+                <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
+            </header>
+
+            <p><h3 class = "text-center">Перелік пов'язаних зборів</h3></p>
+
+            <div id = "addButtonArea" class = "addButtonArea">
+                <button class = "btn btnAdd" id="show" onclick = "OpenDialog()" ><i class="fas fa-plus" style = "font-size: 50px;"></i></button>
+            </div>
+
+            <!-- МЕСТО ДЛЯ ЗАГОЛОВКА ТАБЛИЦЫ -->
+            <div id = "tableHeader">
+            </div>
+
+            <!-- МЕСТО ДЛЯ СОДЕРЖИМОГО ТАБЛИЦЫ -->
+            <div class="gridContent" id="content">
+            </div>
+
+            <!-- Modal -->
+            <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0 pt-0">
+                            <h4 class="modal-title" id="dialogTitle">Вікно для додання збору</h4>
+                            <button type="button" class="close btnXmark " onclick='CloseDialogWindow()' aria-label="Close">
+                                <span aria-hidden="true" style = "font-size: 50px">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id = "ModalBody">
+                            <div id = "news_editor" style="min-width: 500px; display: flex; flex-direction: column; ">
+                                <label id = "news_id" class = "editorLabel" >ID збору:</label>
+                                <label id = "news_house" class = "editorLabel">ID чату:</label>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Потрібна сума </label>
+                                <textarea name = "fund_needed" id = "fund_needed" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Рекомендована сума </label>
+                                <textarea name = "fund_recomended" id = "fund_recomended" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label id = "news_porch" class = "editorLabel">Початок збору:</label>
+                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateStart">
+                                <label id = "news_porch" class = "editorLabel">Завершення збору:</label>
+                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateEnd">
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Текст збору </label>
+                                <textarea name = "news_body" id = "news_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
+
+                                <div id = "errorField" class = "text-center mb-0 pb-0" >
+                                    <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Усі поля повинні бути заповнені</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btnClose" id="news_close" onclick='CloseDialogWindow()'>Закрити</button>
+                            <button type="button" class="btn btn-primary" id="news_save" onclick = "SaveChanges()">Зберігти</button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- Modal close -->
+
+        </main>
+    </div>
+</div>
+
+<!-- Reauired by Bootstrap-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+
+<!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ ПОБОТЫ ФУНКЦИЙ -->
+<script>
+
+    // Параметры дла роботы с локальным хранилищем
+    let localStorageParams = {
+        ChatID: "CreateFundraisingChat_id",              // Id выбраного дома (при создании новости)
+        HouseKeeperToken: "houseKeeperToken"        // Токен домовладельца
+    };
+
+    // Параметры модального окна
+    let modalWindowParams = {
+        modalHeaderTitleId: 'dialogTitle',          // ID заголовка модального окна
+        modalBodyDivId: 'ModalBody',                //  ID тела модального окна
+        modalEditorDivId:'news_editor' ,            // ID div с содержимым модального окна
+    };
+
+    //Обьект для что содержит все новости домоуправленца
+    let data = {};
+
+
+
+
+</script>
+
+<!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
+
+<!-- Cкрипт для возврата в окно регистрации -->
+<script src = "../scripts/Exit.js"></script>
+
+<!-- Cкрипт для удаления елементов -->
+<script src = "../scripts/DeleteElements.js"></script>
+
+<!-- Скрипт для обновления счетчика сообщений-->
+<script src = "../scripts/UnreadLettersCount.js"></script>
+
+<!-- Cкрипт для выбора дома и подъезда, после выбора подъезда выполняеться переданная в скрипт функция -->
+<script src = "../scripts/SelectChats.js"></script>
+
+<script>
+
+    // При закрытии модального окна
+    $('#NewsModalWindow').on('hidden.bs.modal', function (e) {
+        // Возвращаем елементы модального окна в исходное состояние
+        ClearNewsEditor();
+
+        if(document.getElementById('houseContainer0') !== null){
+            DeleteElement('houseContainer0');
+        }
+        if(document.getElementById('porchContainer0') !== null) {
+            DeleteElement('porchContainer0');
+        }
+    });
+
+    function CloseDialogWindow() {
+        document.getElementById('errorMessage').hidden = true;
+        $("#NewsModalWindow").modal('hide');
+    }
+
+    function ShowDialogWindow()
+    {
+        $("#NewsModalWindow").modal('show');
+    }
+
+    function ClearNewsEditor() {
+
+        document.getElementById('dialogTitle').innerHTML = "Вікно для додання збору";
+        document.getElementById("news_id").innerHTML = "";
+        document.getElementById("news_house").innerHTML = "";
+        document.getElementById("localdateStart").value = "";
+        document.getElementById("localdateEnd").value = "";
+        document.getElementById("fund_recomended").value = "";
+        document.getElementById("fund_needed").value = "";
+        var newsTitle = document.getElementById("news_title");
+
+        var newsBody = document.getElementById("news_body");
+        newsBody.value = "";
+        newsBody.placeholder = "Текст";
+
+        //Возвращаем в дефолт
+        document.getElementById('news_save').onclick = function () {
+            SaveChanges();
+        };
+
+        document.getElementById("news_id").hidden = false;
+        document.getElementById('news_editor').hidden = false;
+    }
+</script>
+
+<script>
+
+    function Start()
+    {
+        document.getElementById('errorMessage').hidden = true;
+        GetNews();
+    }
+
+    function OpenDialog() {
+
+        SelectHousesAndPorches(true, modalWindowParams, localStorageParams, ShowModalEditor);
+        ShowDialogWindow();
+    }
+
+
+
+    //Отображает в диалоговом окне поля для создания новости
+    function ShowModalEditor()
+    {
+        document.getElementById('dialogTitle').innerHTML="Додавання збору";
+        document.getElementById("news_id").hidden = true;
+        console.log(localStorage.getItem("CreateFundraisingChat_id"));
+        document.getElementById("news_house").innerHTML = "ID чату: " + localStorage.getItem("CreateFundraisingChat_id");
+        document.getElementById("localdateStart").value = "";
+        document.getElementById("localdateEnd").value = "";
+        var newsBody = document.getElementById("news_body");
+        newsBody.value = "";
+        newsBody.placeholder = "Текст";
+
+        //Запрос на добавление новости
+        document.getElementById('news_save').onclick = function(){
+            if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length > 0
+                && document.getElementById("localdateEnd").value.length > 0){
+                let start = new Date(document.getElementById('localdateStart').value);
+                let end = new Date(document.getElementById('localdateEnd').value);
+                console.log(localStorage.getItem('houseKeeperToken'))
+                const temp_body =
+                    {
+                        chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
+                        needed_value: parseFloat(document.getElementById("fund_needed").value),
+                        recommended_value: parseFloat(document.getElementById("fund_recomended").value),
+                        fundraising_text: document.getElementById("news_body").value,
+                        time_start:start,
+                        time_end:end,
+                        current_value: 0
+                    };
+
+                console.log(temp_body);
+                document.getElementById('errorMessage').hidden = true;
+                AddNews(temp_body);
+                CloseDialogWindow();
+            }else{
+                document.getElementById('errorMessage').hidden = false;
+            }
+
+        };
+        document.getElementById('news_editor').hidden = false;
+    }
+
+    function NewsTableHeader()
+    {
+        if(document.getElementById("NewsTableHeader"))
+        {
+            return;
+        }
+
+        var parBlock = document.createElement("div");
+        parBlock.id = "NewsTableHeader";
+        parBlock.style.display = "flex";
+        parBlock.style.marginTop="50px";
+        parBlock.style.marginBottom = "-17px";
+
+        var elem1 = document.createElement("div");
+        var elem2 = document.createElement("div");
+        var elem3 = document.createElement("div");
+        var elem4 = document.createElement("div");
+        var elem4_5 = document.createElement("div");
+        var elem5 = document.createElement("div");
+        var elem6 = document.createElement("div");
+        elem1.style.marginLeft = "2px";
+        elem6.style.marginRight = "2px";
+
+        elem1.style.width = "10%";
+        elem2.style.width = "10%";
+        elem3.style.width = "30%";
+        elem4.style.width = "15%";
+        elem4_5.style.width = "15%";
+        elem5.style.width = "10%";
+        elem6.style.width = "10%";
+        elem1.style.wordWrap = "break-word";
+        elem2.style.wordWrap = "break-word";
+        elem3.style.wordWrap = "break-word";
+        elem4.style.wordWrap = "break-word";
+        elem4_5.style.wordWrap = "break-word";
+        elem5.style.wordWrap = "break-word";
+        elem6.style.wordWrap = "break-word";
+        var pel1 = document.createElement("p");
+        var pel2 = document.createElement("p");
+        var pel3 = document.createElement("p");
+        var pel4 = document.createElement("p");
+        var pel4_5 = document.createElement("p");
+        var pel5 = document.createElement("p");
+        var pel6 = document.createElement("p");
+        pel1.style.textAlign = "center";
+        pel2.style.textAlign = "center";
+        pel3.style.textAlign = "center";
+        pel4.style.textAlign = "center";
+        pel4_5.style.textAlign = "center";
+        pel5.style.textAlign = "center";
+        pel6.style.textAlign = "center";
+        pel1.style.fontSize = "25px";
+        pel2.style.fontSize = "25px";
+        pel3.style.fontSize = "25px";
+        pel4.style.fontSize = "25px";
+        pel4_5.style.fontSize = "25px";
+        pel5.style.fontSize = "25px";
+        pel6.style.fontSize = "25px";
+
+
+        pel1.innerHTML = "ID чату";
+        pel2.innerHTML = "ID збору";
+        pel3.innerHTML = "Інформація про збір";
+        pel4.innerHTML = "Отримано";
+        pel4_5.innerHTML = "Потрібно";
+        pel5.innerHTML = "Редагувати";
+        pel6.innerHTML = "Видалити";
+        elem1.appendChild(pel1);
+        elem2.appendChild(pel2);
+        elem3.appendChild(pel3);
+        elem4.appendChild(pel4);
+        elem4_5.appendChild(pel4_5);
+        elem5.appendChild(pel5);
+        elem6.appendChild(pel6);
+
+        parBlock.appendChild(elem1);
+        parBlock.appendChild(elem2);
+        parBlock.appendChild(elem3);
+        parBlock.appendChild(elem4);
+        parBlock.appendChild(elem4_5);
+        parBlock.appendChild(elem5);
+        parBlock.appendChild(elem6);
+        document.getElementById("tableHeader").appendChild(parBlock);
+    }
+
+
+
+    function FillNews(){
+
+
+        //отображаем оглавление таблицы
+        NewsTableHeader();
+
+        //Удаляем элементы при повторном отображении
+        DeleteChildren('content');
+        let first = true;
+        for(var key in data.fundraisings){
+
+            var parBlock = document.createElement("div");
+            parBlock.style.display = "flex";
+            parBlock.id = "parBlock"+key;
+
+            if(!first) {
+                parBlock.style.marginTop = "10px";
+            }
+            else
+            {
+                parBlock.style.marginTop = "2px";
+                first = false;
+            }
+
+            var elem1 = document.createElement("div");
+            var elem2 = document.createElement("div");
+            var elem3 = document.createElement("div");
+            var elem4 = document.createElement("div");
+            var elem4_5 = document.createElement("div");
+            var elem5 = document.createElement("div");
+            var elem6 = document.createElement("div");
+            elem1.style.marginLeft = "2px";
+            elem6.style.marginRight = "2px";
+
+            elem1.style.outline = "2px solid #000";
+            elem2.style.outline = "2px solid #000";
+            elem3.style.outline = "2px solid #000";
+            elem4.style.outline = "2px solid #000";
+            elem4_5.style.outline = "2px solid #000";
+
+            elem1.style.backgroundColor = "rgba(255,164,51,0.73)";
+            elem2.style.backgroundColor = "rgba(255,164,51,0.73)";
+            elem3.style.backgroundColor = "rgba(255,164,51,0.73)";
+            elem4.style.backgroundColor = "rgba(255,164,51,0.73)";
+            elem4_5.style.backgroundColor = "rgba(255,164,51,0.73)";
+
+            elem1.style.width = "10%";
+            elem2.style.width = "10%";
+            elem3.style.width = "30%";
+            elem4.style.width = "15%";
+            elem4_5.style.width = "15%";
+            elem5.style.width = "10%";
+            elem6.style.width = "10%";
+            elem1.style.wordWrap = "break-word";
+            elem2.style.wordWrap = "break-word";
+            elem3.style.wordWrap = "break-word";
+            elem4.style.wordWrap = "break-word";
+            elem4_5.style.wordWrap = "break-word";
+            elem5.style.wordWrap = "break-word";
+            elem6.style.wordWrap = "break-word";
+            var pel1 = document.createElement("p");
+            var pel2 = document.createElement("p");
+            var pel3 = document.createElement("p");
+            var pel4 = document.createElement("p");
+            var pel4_5 = document.createElement("p");
+            var pel5 = document.createElement("button");
+            var pel6 = document.createElement("button");
+            pel3.id="title"+key;
+            pel3.name = key;
+            pel4.id="text"+key;
+            pel4_5.id="text"+key;
+            pel4.name = key;
+            pel4_5.name = key;
+            pel5.style.marginLeft="20%";
+            pel5.style.marginTop="5%";
+            pel6.style.marginTop="5%";
+            pel6.style.marginLeft="20%";
+            pel5.style.minWidth = "120px";
+            pel6.style.minWidth = "120px";
+            pel6.style.minHeight = "40px";
+            pel5.style.minHeight = "40px";
+            pel1.style.textAlign = "center";
+            pel2.style.textAlign = "center";
+            pel3.style.textAlign = "center";
+            pel4.style.textAlign = "center";
+            pel4_5.style.textAlign = "center";
+            pel5.style.textAlign = "center";
+            pel6.style.textAlign = "center";
+            pel1.style.fontFamily = "Century Gothic";
+            pel1.style.fontSize = "20px";
+            pel2.style.fontSize = "20px";
+            pel3.style.fontSize = "20px";
+            pel4.style.fontSize = "20px";
+            pel4_5.style.fontSize = "20px";
+
+            pel5.innerHTML = "<i class='fas fa-pen-square' style = 'font-size: 28px;'></i>";
+            pel5.className = "btn";
+            pel5.id = "changeBut"+data.fundraisings[key]['fundraising_id'];
+            pel5.name = data.fundraisings[key]['fundraising_id'];
+
+            // Нажатие на кнопку "Редактировать"
+            pel5.onclick= async function() {
+                //Получаем данные новости
+                await GetOneNews(this.name);
+            };
+
+            pel6.className = "btn btnDel";
+            pel6.innerHTML = "<i class='far fa-trash-alt' style = 'font-size: 28px;'></i>";
+            pel6.id = "deleteBut"+data.fundraisings[key]['fundraising_id'];
+            pel6.name = data.fundraisings[key]['fundraising_id'];
+
+            pel6.onclick= function() {
+                console.log(this.name)
+                DeleteNews(this.name);
+            };
+
+            // Вывод локации и номер дома
+            pel1.innerHTML = data.fundraisings[key]['chat_id'];
+            // Проверка на наличие подьезда
+            pel2.innerHTML = data.fundraisings[key]['fundraising_id']
+            pel3.innerHTML = (data.fundraisings[key]['fundraising_text'].length > 50) ? data.fundraisings[key]['fundraising_text'].substr(0,50) + "..." : data.fundraisings[key]['fundraising_text'];
+            pel4.innerHTML = data.fundraisings[key]['current_value'];
+            pel4_5.innerHTML = data.fundraisings[key]['needed_value'];
+            elem1.appendChild(pel1);
+            elem2.appendChild(pel2);
+            elem3.appendChild(pel3);
+            elem4.appendChild(pel4);
+            elem4_5.appendChild(pel4_5);
+            elem5.appendChild(pel5);
+            elem6.appendChild(pel6);
+
+            parBlock.appendChild(elem1);
+            parBlock.appendChild(elem2);
+            parBlock.appendChild(elem3);
+            parBlock.appendChild(elem4);
+            parBlock.appendChild(elem4_5);
+            parBlock.appendChild(elem5);
+            parBlock.appendChild(elem6);
+            document.getElementById("content").appendChild(parBlock);
+        }
+    }
+
+    function EditNews() {
+        console.log(oneNewsData.fundraising.date_start + "a");
+        document.getElementById('news_id').innerHTML = "ID збору: " + oneNewsData.fundraising.fundraising_id;
+        document.getElementById('news_id').name = oneNewsData.fundraising.fundraising_id;
+        document.getElementById('news_body').value = oneNewsData.fundraising.fundraising_text;
+        document.getElementById('news_house').innerHTML = "ID чату: " + oneNewsData.fundraising.chat_id;
+        document.getElementById('fund_needed').value = oneNewsData.fundraising.needed_value;
+        document.getElementById('fund_recomended').value = oneNewsData.fundraising.recommended_value;
+        document.getElementById('localdateStart').type = "text";
+        document.getElementById('localdateEnd').type = "text";
+        document.getElementById('dialogTitle').innerHTML = "Редагування збору";
+        let d = new Date(oneNewsData.fundraising.time_start);
+        var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+        document.getElementById('localdateStart').value = datestring;
+
+        d= new Date(oneNewsData.fundraising.time_end);
+        datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+        document.getElementById('localdateEnd').value = datestring;
+        //Учитываем картинки
+        document.getElementById('localdateStart').type = "text";
+        document.getElementById('localdateEnd').type = "text";
+
+
+        // Функция для обновления новости при нажатии на кнопку Сохранить
+        document.getElementById('news_save').onclick = async function () {
+            console.log(document.getElementById("localdateStart").value.length+"len");
+            document.getElementById("localdateEnd").type = "text";
+            document.getElementById("localdateStart").type = "text";
+            if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length != 0
+                && document.getElementById("localdateEnd").value.length != 0){
+                //Отправляем новые данные на сервер
+                let start = new Date(document.getElementById('localdateStart').value);
+                let end = new Date(document.getElementById('localdateEnd').value);
+
+                const temp_body =
+                    {
+                        chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
+                        needed_value: parseFloat(document.getElementById("fund_needed").value),
+                        recommended_value: parseFloat(document.getElementById("fund_recomended").value),
+                        fundraising_text: document.getElementById("news_body").value,
+                        time_start:start,
+                        time_end:end
+                    };
+                console.log("temmpmpmp");
+                console.log(temp_body);
+                document.getElementById('errorMessage').hidden = true;
+                await UpdateNews(oneNewsData.fundraising.fundraising_id, temp_body);
+
+                CloseDialogWindow();
+            } else{
+                document.getElementById('errorMessage').hidden = false;
+            }
+        };
+
+        //отображаем текущюю информацию о новости
+        ShowDialogWindow();
+    }
+
+    async function GetNews()
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/', {
+            method: 'GET',
+            headers: head
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                //Если закончилось время длительности токена
+                if(NewsData.error_message && NewsData.error_message.indexOf("token") !== -1)
+                {
+                    alert("Час сессії було вичерпано. Якщо ві бажаєте продовжити роботу, виконайте повторний вхід");
+                    Exit();
+                }
+
+                data = NewsData;
+                FillNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return true;
+    }
+
+    oneNewsData = {};
+    async function GetOneNews(news_id)
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/' + news_id, {
+            method: 'GET',
+            headers: head
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                oneNewsData  = NewsData;
+                EditNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        return true;
+    }
+
+
+
+    function DeleteNews(newsId)
+    {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/' + newsId, {
+            method: 'DELETE',
+            headers: head,
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                console.log("deleted");
+                GetNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+
+
+        //delete data.news[newsId];
+        //document.getElementById("parBlock"+newsId).remove();
+
+    }
+
+    function UpdateNews(newsId, newsData) {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/' + newsId, {
+            method: 'PUT',
+            headers: head,
+            body: JSON.stringify(newsData)
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                console.log("updated");
+                // Обновляем локальный json
+                // с учетом возможности изменения id в бд
+                GetNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    }
+
+    function AddNews(newsData) {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/', {
+            method: 'POST',
+            headers: head,
+            body: JSON.stringify(newsData)
+        })
+            .then(response => response.json())
+            .then(NewsData => {
+                console.log('Success:', NewsData);
+                console.log("NewsAdded");
+                GetNews();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+
+
+    }
+
+    function SaveChanges(){
+
+    }
+
+</script>
+</html>
