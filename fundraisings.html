@@ -147,10 +147,15 @@
                         <div class="modal-body" id = "ModalBody">
                             <div id = "news_editor" style="min-width: 500px; display: flex; flex-direction: column; ">
                                 <label id = "news_id" class = "editorLabel" >ID збору:</label>
-                                <label id = "news_house" class = "editorLabel">Дім:</label>
-                                <label id = "news_porch" class = "editorLabel">Під`їзд:</label>
-                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Заголовок збору </label>
-                                <textarea name = "news_title" id = "news_title" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label id = "news_house" class = "editorLabel">ID чату:</label>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Потрібна сума </label>
+                                <textarea name = "fund_needed" id = "fund_needed" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Рекомендована сума </label>
+                                <textarea name = "fund_recomended" id = "fund_recomended" placeholder="Заголовок" class="editorLabel"></textarea>
+                                <label id = "news_porch" class = "editorLabel">Початок збору:</label>
+                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateStart">
+                                <label id = "news_porch" class = "editorLabel">Завершення збору:</label>
+                                <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateEnd">
                                 <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Текст збору </label>
                                 <textarea name = "news_body" id = "news_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
                               
@@ -181,7 +186,6 @@
 
 <!--СКРИПТ СОДЕРЖИТ ВСЕ НЕОБХОДИМЫЕ ПАРАМЕТРЫ ДЛЯ ПОБОТЫ ФУНКЦИЙ -->
 <script>
-    // Параметры дла работы с картинками (AddImageField)
 
     // Параметры дла роботы с локальным хранилищем
     let localStorageParams = {
@@ -205,7 +209,6 @@
 </script>
 
 <!--СКРИПТ ДЛЯ ОТОБРАЖЕНИЯ КАРТИНОК -->
-<script src = "scripts/ImageControl.js"></script>
 
 <!-- Cкрипт для возврата в окно регистрации -->
 <script src = "scripts/Exit.js"></script>
@@ -246,8 +249,10 @@
         document.getElementById('dialogTitle').innerHTML = "Вікно для додання збору";
         document.getElementById("news_id").innerHTML = "";
         document.getElementById("news_house").innerHTML = "";
-        document.getElementById("news_porch").innerHTML = "";
-
+        document.getElementById("localdateStart").value = "";
+        document.getElementById("localdateEnd").value = "";
+        document.getElementById("fund_recomended").value = "";
+        document.getElementById("fund_needed").value = "";
         var newsTitle = document.getElementById("news_title");
         newsTitle.value = "";
         newsTitle.placeholder = "Заголовок";
@@ -260,10 +265,6 @@
         document.getElementById('news_save').onclick = function () {
             SaveChanges();
         };
-
-        //Удаляем информацию для роботы с картинками
-        DeleteChildren(imageNeededParams.carouselBodyId);
-        DeleteChildren(imageNeededParams.inputHolderId);
 
         document.getElementById("news_id").hidden = false;
         document.getElementById('news_editor').hidden = false;
@@ -291,43 +292,33 @@
     {
         document.getElementById('dialogTitle').innerHTML="Додавання збору";
         document.getElementById("news_id").hidden = true;
-        document.getElementById("news_house").innerHTML = "Дім: " + localStorage.getItem("CreateNewsHouseName");
-        if(localStorage.getItem("CreateNewsPorchName") !== "null") {
-            document.getElementById("news_porch").innerHTML = "Під`їзд: " + localStorage.getItem("CreateNewsPorchName");
-        }
-        else{
-            document.getElementById("news_porch").innerHTML = "Збір для усього будинку";
-        }
-
-        var newsTitle = document.getElementById("news_title");
-        newsTitle.value = "";
-        newsTitle.placeholder = "Заголовок";
-
+        console.log(localStorage.getItem("CreateFundraisingChat_id"));
+        document.getElementById("news_house").innerHTML = "ID чату: " + localStorage.getItem("CreateFundraisingChat_id");
+        document.getElementById("localdateStart").value = "";
+        document.getElementById("localdateEnd").value = "";
         var newsBody = document.getElementById("news_body");
         newsBody.value = "";
         newsBody.placeholder = "Текст";
 
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
-        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0){
+        	if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length > 0
+                && document.getElementById("localdateEnd").value.length > 0 && document.getElementById("localdateStart").value < document.getElementById("localdateEnd").value){
+                let start = new Date(document.getElementById('localdateStart').value);
+                let end = new Date(document.getElementById('localdateEnd').value);
+                console.log(localStorage.getItem('houseKeeperToken'))
             const temp_body =
                 {
-                    house_id: parseInt(localStorage.getItem("CreateNewsHouse_id")),
-                    title: document.getElementById("news_title").value,
-                    text: document.getElementById("news_body").value
+                    chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
+                    needed_value: parseFloat(document.getElementById("fund_needed").value),
+                    recommended_value: parseFloat(document.getElementById("fund_recomended").value),
+                    fundraising_text: document.getElementById("news_body").value,
+                    time_start:start,
+                    time_end:end,
+                    current_value: 0
                 };
-            if(localStorage.getItem("CreateNewsPorchName") !== "null")
-            {
-                temp_body.porch_id = parseInt(localStorage.getItem("CreateNewsPorch_id"));
-            }
-            // Берем ссылки на картинки
-            var temp_obj = [];
-            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
-            for (i = 0; i < divs.length; i++) {
-                temp_obj[i] = divs[i].children[0].src;
-            }
-            temp_body.images = temp_obj;
-            console.log("ok");
+            
             console.log(temp_body);
 			document.getElementById('errorMessage').hidden = true;
             AddNews(temp_body);
@@ -524,8 +515,8 @@
 
             pel5.innerHTML = "<i class='fas fa-pen-square' style = 'font-size: 28px;'></i>";
             pel5.className = "btn";
-            pel5.id = "changeBut"+key;
-            pel5.name = key;
+            pel5.id = "changeBut"+data.fundraisings[key]['fundraising_id'];
+            pel5.name = data.fundraisings[key]['fundraising_id'];
 
             // Нажатие на кнопку "Редактировать"
             pel5.onclick= async function() {
@@ -535,10 +526,11 @@
 
             pel6.className = "btn btnDel";
             pel6.innerHTML = "<i class='far fa-trash-alt' style = 'font-size: 28px;'></i>";
-            pel6.id = "deleteBut"+key;
-            pel6.name = key;
+            pel6.id = "deleteBut"+data.fundraisings[key]['fundraising_id'];
+            pel6.name = data.fundraisings[key]['fundraising_id'];
 
             pel6.onclick= function() {
+                console.log(this.name)
                 DeleteNews(this.name);
             };
 
@@ -569,30 +561,34 @@
     }
 
     function EditNews() {
-        console.log(oneNewsData.news.news_id);
-        console.log("^^^");
 
-        document.getElementById('news_id').innerHTML = "ID збору: " + oneNewsData.news.news_id;
-        document.getElementById('news_id').name = oneNewsData.news.news_id;
-        document.getElementById('news_title').value = oneNewsData.news.title;
-        document.getElementById('news_body').value = oneNewsData.news.text;
-        document.getElementById('news_house').innerHTML = "Дім: " + oneNewsData.news.house_number;
-
-        document.getElementById('news_porch').innerHTML = (oneNewsData.news.porch_name != null) ? "Під'їзд: " + oneNewsData.news.porch_name : "Під'їзд: Збір для усього будинку";
+        document.getElementById('news_id').innerHTML = "ID збору: " + oneNewsData.fundraisings.fundraising_id;
+        document.getElementById('news_id').name = oneNewsData.fundraisings.fundraising_id;
+        document.getElementById('news_body').value = oneNewsData.fundraisings.fundraising_text;
+        document.getElementById('news_house').innerHTML = "ID чату: " + oneNewsData.news.house_number;
+        document.getElementById('fund_needed').value = oneNewsData.fundraisings.needed_value;
+        document.getElementById('fund_recomended').value = oneNewsData.fundraisings.recommended_value;
+        document.getElementById('localdateStart').type = "text";
+        document.getElementById('localdateEnd').type = "text";
         document.getElementById('dialogTitle').innerHTML = "Редагування збору";
+        let d = new Date(oneNewsData.news.date_start);
+        var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+        document.getElementById('localdateStart').value = datestring;
 
+        d= new Date(oneNewsData.news.date_end);
+        datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+        document.getElementById('localdateEnd').value = datestring;
         //Учитываем картинки
-        if(oneNewsData.images !== null) {
-            for (let i = 0; i < oneNewsData.images.length; i++) {
-                AddImageField(imageNeededParams, oneNewsData.images[i]);
-            }
-            console.log(oneNewsData.images.length);
-        }
+
 
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
-        	if(document.getElementById("news_title").value.length > 0 && document.getElementById("news_body").value.length > 0){
+        	if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length > 0
+                && document.getElementById("localdateEnd").value.length > 0 && document.getElementById("localdateStart").value < document.getElementById("localdateEnd").value){
             //Отправляем новые данные на сервер
             const temp_body =
                 {
@@ -662,7 +658,7 @@
                 'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
             };
 
-        fetch('https://prp-project-server.herokuapp.com/api/news/' + news_id, {
+        fetch('https://prp-project-server.herokuapp.com/api/fundraising/' + news_id, {
             method: 'GET',
             headers: head
         })
