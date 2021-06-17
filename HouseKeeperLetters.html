@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
     <title>title</title>
     <!-- Required meta tags -->
@@ -16,6 +15,8 @@
 
     <!-- Подключаем css-->
     <link rel="stylesheet" type="text/css" href="CSS/General.css">
+    <link rel="stylesheet" type="text/css" href="CSS/LetterSwitch.css">
+
 
 </head>
 <body onLoad="Start()">
@@ -54,15 +55,72 @@
                 <h3 class = "text-center"> Панель домоуправлінця MyPlace </h3>
             </header>
 
-            <p><h3 class = "text-center">Перелік листів</h3></p>
+            <h3 class = "text-center pb-0 mb-2 pt-4">Перелік листів</h3>
+            <p class = "text pt-0 pb-0 mb-0" align="right" style="margin-right: 25px">
+                <span id = "Unreplied count">Потребує відповіді:</span>
+                <span id = "Total count">Усього:</span>
+            </p>
 
             <!-- МЕСТО ДЛЯ ЗАГОЛОВКА ТАБЛИЦЫ -->
             <div id = "tableHeader">
             </div>
 
             <!-- МЕСТО ДЛЯ СОДЕРЖИМОГО ТАБЛИЦЫ -->
-            <div class="gridContent" id="content">
+            <div class="gridContent" id="content" style="height: calc(100vh - 165px);">
             </div>
+
+            <!-- Modal -->
+            <div  class="modal fade" id="NewsModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0 pt-0">
+                            <h4 class="modal-title" id="dialogTitle">Отриманий лист</h4>
+                            <button type="button" class="close btnXmark " onclick='CloseDialogWindow()' aria-label="Close">
+                                <span aria-hidden="true" style = "font-size: 50px">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id = "ModalBody">
+                            <div class = "letter_editor" id = "letter_editor" style="min-width: 500px; display: flex; flex-direction: column;">
+                                <label id = "author" class = "editorLabel" >Мешканець: </label>
+                                <label id = "letter_house" class = "editorLabel">Дім:</label>
+                                <label id = "letter_porch" class = "editorLabel">Під`їзд:</label>
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px">Повідомлення</label>
+                                <textarea name = "letter_body" id = "letter_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" readonly = true placeholder="Текст" ></textarea>
+                            </div>
+
+                            <div class = "letter_answer pb-0 mb-0" id = "letter_answer" style="min-width: 500px; display: flex; flex-direction: column;">
+                                <div id = "IsAnsweredDiv" hidden = true>
+                                    <h3 class = "text-center">Відповідь на повідомлення вже надана</h3>
+                                </div>
+                                <div class="wrapper p-0 m-0 pt-1">
+                                    <input type="radio" name="select" id="option-1" checked onclick=GreenShadow()>
+                                    <input type="radio" name="select" id="option-2" onclick=RedShadow()>
+                                    <label for="option-1" class="option option-1">
+                                        <div class="dot m-2"></div>
+                                        <span>Підтвердити</span>
+                                    </label>
+                                    <label for="option-2" class="option option-2">
+                                        <div class="dot m-2"></div>
+                                        <span>Спростувати</span>
+                                    </label>
+                                </div>
+
+                                <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px">Текст відповіді</label>
+                                <textarea name = "letter_reply" id = "letter_reply" class = "mb-4" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
+
+                            </div>
+
+                            <div id = "errorField" class = "text-center mb-0 pb-0 pt-4" >
+                                <p align="center" id = "errorMessage" style="color: #e66548; alignment: center" hidden = true >Порожній текст відповіді</p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btnClose" id="letter_close" onclick='CloseDialogWindow()'>Закрити</button>
+                            <button type="button" class="btn btn-primary" id="letter_save">Відповісти</button>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Modal close -->
 
         </main>
     </div>
@@ -85,10 +143,67 @@
 
 <script>
 
+    function RedShadow()
+    {
+        place = document.getElementById("letter_answer");
+        place.style.boxShadow = "0 0 15px 6px #e69889"
+    }
+
+    function GreenShadow()
+    {
+        place = document.getElementById("letter_answer");
+        place.style.boxShadow = "0 0 15px 6px #b8e6a2";
+    }
+
+    function ShowDialogWindow()
+    {
+        $("#NewsModalWindow").modal('show');
+    }
+
+    function CloseDialogWindow() {
+        document.getElementById('errorMessage').hidden = true;
+        $("#NewsModalWindow").modal('hide');
+    }
+
+    // При закрытии модального окна
+    $('#NewsModalWindow').on('hidden.bs.modal', function (e) {
+        // Возвращаем елементы модального окна в исходное состояние
+        ClearNewsEditor();
+    });
+
+    function ClearNewsEditor() {
+
+        document.getElementById('author').innerHTML = "Мешканець: ";
+        document.getElementById('letter_porch').innerHTML ="Під'їзд: ";
+        document.getElementById('letter_house').innerHTML = "Дім: ";
+        document.getElementById('IsAnsweredDiv').hidden = true;
+        document.getElementById('letter_save').hidden = false;
+
+        let radio = document.getElementById('option-1');
+        radio.disabled = false;
+        radio.checked = true;
+        GreenShadow();
+        document.getElementById('option-2').disabled = false;
+
+        let tmp_body = document.getElementById('letter_body');
+        tmp_body.value = "";
+        tmp_body.placeholder = "Текст";
+
+        tmp_body = document.getElementById("letter_reply");
+        tmp_body.value = "";
+        tmp_body.readOnly = false;
+        tmp_body.placeholder = "Текст";
+        document.getElementById('errorMessage').hidden = true;
+
+    }
+
+
     function Start()
     {
         GetLetters();
     }
+
+
 
     letters = {};
     async function GetLetters()
@@ -125,23 +240,20 @@
 
     function FillLetters(){
 
-        //отображаем оглавление таблицы
-        //NewsTableHeader();
-
         //Удаляем элементы при повторном отображении
         DeleteChildren('content');
+
+        let notAnswearedCount = 0;
+        let isAnswered = false;
 
         let first = true;
         for(var key in letters.letters){
 
+            LetterId = letters.letters[key].letter_id;
+
             var parBlock = document.createElement("div");
             parBlock.style.display = "flex";
-            parBlock.id = "parBlock"+key;
-
-            parBlock.onclick = async function()
-            {
-                await GetOneLetter(key);
-            };
+            parBlock.id = "parBlock"+LetterId;
 
             if(!first) {
                 parBlock.style.marginTop = "10px";
@@ -152,6 +264,22 @@
                 first = false;
             }
 
+            //rgba(255,164,51,0.73)
+            let color = "rgba(208,208,208,0.73)";
+            if(letters.letters[key].reply_type === true) {
+                color = "#b8e6a2";
+                isAnswered = true;
+            }else if(letters.letters[key].reply_type === false){
+                color = "#e69889";
+                isAnswered = true;
+            }else{
+                notAnswearedCount++;
+            }
+
+            parBlock.onclick = async function () {
+                await GetOneLetter(this.id.substring(8));
+            };
+
             var elem1 = document.createElement("div");
             var elem2 = document.createElement("div");
             var elem3 = document.createElement("div");
@@ -159,18 +287,24 @@
             elem1.style.marginLeft = "2px";
             //elem6.style.marginRight = "2px";
 
+            elem1.id = parBlock.id + "elem1";
+            elem1.name = parBlock.id + "elem2";
+            elem2.id = parBlock.id + "elem3";
+            elem3.id = parBlock.id + "elem4";
+            elem4.id = parBlock.id + "elem5";
+
+
+
             elem1.style.outline = "2px solid #000";
             elem2.style.outline = "2px solid #000";
             elem3.style.outline = "2px solid #000";
             elem4.style.outline = "2px solid #000";
 
-            //let color = "rgba(255,164,51,0.73)";
-            //if(letters.letters[key]['reply_type'] !== null)
 
-            elem1.style.backgroundColor = "rgba(255,164,51,0.73)";
-            elem2.style.backgroundColor = "rgba(255,164,51,0.73)";
-            elem3.style.backgroundColor = "rgba(255,164,51,0.73)";
-            elem4.style.backgroundColor = "rgba(255,164,51,0.73)";
+            elem1.style.backgroundColor = color;
+            elem2.style.backgroundColor = color;
+            elem3.style.backgroundColor = color;
+            elem4.style.backgroundColor = color;
 
             elem1.style.width = "10%";
             elem2.style.width = "10%";
@@ -184,10 +318,10 @@
             var pel2 = document.createElement("p");
             var pel3 = document.createElement("p");
             var pel4 = document.createElement("p");
-            pel3.id="title"+key;
-            pel3.name = key;
-            pel4.id="text"+key;
-            pel4.name = key;
+            pel3.id="title"+LetterId;
+            pel3.name = LetterId;
+            pel4.id="text"+LetterId;
+            pel4.name = LetterId;
             pel1.style.textAlign = "center";
             pel2.style.textAlign = "center";
             pel3.style.textAlign = "center";
@@ -202,10 +336,11 @@
             pel4.style.fontFamily = "Century Gothic";
 
 
-
-            pel1.innerHTML = letters.letters[key]['inhabitant_id'];
-            pel2.innerHTML = "tempValue_HouseNumber";
-            pel3.innerHTML = "tempValue_PorchNumber";
+            AuthSecondName = letters.letters[key].inhabitant_info.second_name;
+            AutnFirstName = letters.letters[key].inhabitant_info.name;
+            pel1.innerHTML = AuthSecondName + "\n" + AutnFirstName;
+            pel2.innerHTML = letters.letters[key].house_number;
+            pel3.innerHTML = letters.letters[key].porch_name;
             pel4.innerHTML = (letters.letters[key]['answer_text'].length > 100) ? letters.letters[key]['answer_text'].substr(0,100) + "..." : letters.letters[key]['answer_text'];
             elem1.appendChild(pel1);
             elem2.appendChild(pel2);
@@ -216,6 +351,31 @@
             parBlock.appendChild(elem2);
             parBlock.appendChild(elem3);
             parBlock.appendChild(elem4);
+
+
+
+            parBlock.onmouseover = function()
+            {
+                let childElems = this.children;
+                for(let i = 0; i < childElems.length; i++)
+                {
+                    document.getElementById(childElems[i].id).style.backgroundColor = "rgba(161,161,161,0.73)";
+                }
+
+            };
+
+            parBlock.onmouseleave = function()
+            {
+                let childElems = this.children;
+                for(i = 0; i < childElems.length; i++)
+                {
+                    document.getElementById(childElems[i].id).style.backgroundColor = color;
+                }
+            };
+
+            document.getElementById("Total count").innerHTML = "Усього: " + letters.letters.length;
+            document.getElementById("Unreplied count").innerHTML = "Потребує відповіді: " + notAnswearedCount;
+
             document.getElementById("content").appendChild(parBlock);
         }
     }
@@ -223,6 +383,7 @@
     oneLetterData = {};
     async function GetOneLetter(letter_id)
     {
+        console.log("ID  " + letter_id);
         const head =
             {
                 'Content-type': 'application/json; charset=UTF-8',
@@ -237,12 +398,97 @@
             .then(LetterData => {
                 console.log('Success:', LetterData);
                 oneLetterData  = LetterData;
-                //EditNews();
+                EditLetter();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         return true;
+    }
+
+    function ucFirst(string)
+    {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function EditLetter() {
+
+        AuthSecondName = oneLetterData.letter.inhabitant_info.second_name;
+        AutnFirstName = oneLetterData.letter.inhabitant_info.name;
+
+        document.getElementById('author').innerHTML = "Мешканець " + ucFirst(AuthSecondName) + " " + ucFirst(AutnFirstName);
+        document.getElementById('letter_porch').innerHTML ="Під'їзд: " + oneLetterData.letter.porch_name;
+        document.getElementById('letter_house').innerHTML = "Дім: " + oneLetterData.letter.house_number;
+        document.getElementById('letter_body').value = oneLetterData.letter.answer_text;
+
+        // На письмо уже был дан ответ
+        if(oneLetterData.letter.reply_type !== null){
+            let replyBody = document.getElementById("letter_reply");
+            replyBody.value = oneLetterData.letter.reply_text;
+            replyBody.readOnly = true;
+            document.getElementById('IsAnsweredDiv').hidden = false;
+            document.getElementById('letter_save').hidden = true;
+
+            if(oneLetterData.letter.reply_type === true) {
+                let radio = document.getElementById('option-1');
+                radio.checked = true;
+                radio.disabled = true;
+                GreenShadow();
+                document.getElementById('option-2').disabled = true;
+            }
+            else{
+                let radio = document.getElementById('option-2');
+                radio.checked = true;
+                radio.disabled = true;
+                RedShadow();
+                document.getElementById('option-1').disabled = true;
+            }
+        }
+
+        // Функция для обновления письма при нажатии на кнопку Сохранить
+        document.getElementById('letter_save').onclick = async function () {
+            if(document.getElementById("letter_reply").value.length > 0){
+                //Отправляем новые данные на сервер
+                const temp_body =
+                    {
+                        repty_text: document.getElementById('letter_reply').value,
+                        reply_type: document.getElementById('option-1').checked
+                    };
+                console.log(temp_body);
+                await UpdateLetter(oneLetterData.letter.letter_id, temp_body);
+
+                CloseDialogWindow();
+            } else{
+                document.getElementById('errorMessage').hidden = false;
+            }
+        };
+
+        //отображаем текущюю информацию о новости
+        ShowDialogWindow();
+    }
+
+    function UpdateLetter(letterId, letterData) {
+        const head =
+            {
+                'Content-type': 'application/json; charset=UTF-8',
+                'Authorization': 'Bearer ' + localStorage.getItem('houseKeeperToken')
+            };
+        fetch('https://prp-project-server.herokuapp.com/api/letter/' + letterId, {
+            method: 'PUT',
+            headers: head,
+            body: JSON.stringify(letterData)
+        })
+            .then(response => response.json())
+            .then(LetterData => {
+                console.log('Success:', LetterData);
+                // Обновляем локальный json
+                // с учетом возможности изменения id в бд
+                GetLetters();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
     }
 
 
