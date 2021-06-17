@@ -17,7 +17,7 @@
     <style>
         /* Кнопки стиля */
         body{
-        	font-family:Century Gothic;
+            font-family:Century Gothic;
         }
         .btn {
             background-color: #A0CDE8; /* Синий фон */
@@ -78,8 +78,8 @@
         }
         .editorLabel
         {
-        	font-family:Century Gothic;
-        	font-size: 20px;
+            font-family:Century Gothic;
+            font-size: 20px;
         }
 
     </style>
@@ -103,13 +103,7 @@
                             <a class="nav-link pl-0" href="events.html"><i class="fas fa-globe"></i> <span class="d-none d-md-inline">Події</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link pl-0" href="HouseKeeperLetters.html">
-                                <i class="fas fa-envelope-open-text"></i>
-                                <span class="d-none d-md-inline" style = "margin-right: 4px;">Перегляд листів</span>
-                                <span id = "LetterCounter" style="min-height: 20px; min-width: 20px; padding-right: 5px; padding-left: 2px; background-color: #e66548;  border-radius: 3px;">
-                                    <b id = "LetterCounterText"></b>
-                                </span>
-                            </a>
+                            <a class="nav-link pl-0" href="HouseKeeperLetters.html"><i class="fas fa-envelope-open-text"></i> <span class="d-none d-md-inline">Перегляд листів</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link pl-0" href="index.html" onclick="Exit()"><i class="fas fa-sign-out-alt"></i> <span class="d-none d-md-inline text-danger">Вихід</span></a>
@@ -164,10 +158,10 @@
                                 <input placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='datetime-local')" id="localdateEnd">
                                 <label style = "font-family:Century Gothic; margin-top: 7px; font-size: 20px"> Текст збору </label>
                                 <textarea name = "news_body" id = "news_body" style = "min-height: 200px;font-family:Century Gothic; font-size: 20px" placeholder="Текст" ></textarea>
-                              
+
                                 <div id = "errorField" class = "text-center mb-0 pb-0" >
-                					<p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Усі поля повинні бути заповнені</p>
-            					</div>
+                                    <p align="center" id = "errorMessage" style="color: #e66548; alignment: center">Усі поля повинні бути заповнені</p>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -222,9 +216,6 @@
 <!-- Cкрипт для удаления елементов -->
 <script src = "scripts/DeleteElements.js"></script>
 
-<!-- Скрипт для обновления счетчика сообщений-->
-<script src = "scripts/UnreadLettersCount.js"></script>
-
 <!-- Cкрипт для выбора дома и подъезда, после выбора подъезда выполняеться переданная в скрипт функция -->
 <script src = "scripts/SelectChats.js"></script>
 
@@ -244,7 +235,7 @@
     });
 
     function CloseDialogWindow() {
-    	document.getElementById('errorMessage').hidden = true;
+        document.getElementById('errorMessage').hidden = true;
         $("#NewsModalWindow").modal('hide');
     }
 
@@ -263,8 +254,6 @@
         document.getElementById("fund_recomended").value = "";
         document.getElementById("fund_needed").value = "";
         var newsTitle = document.getElementById("news_title");
-        newsTitle.value = "";
-        newsTitle.placeholder = "Заголовок";
 
         var newsBody = document.getElementById("news_body");
         newsBody.value = "";
@@ -284,8 +273,7 @@
 
     function Start()
     {
-        GetUnreadLettersCount('LetterCounterText');
-    	document.getElementById('errorMessage').hidden = true;
+        document.getElementById('errorMessage').hidden = true;
         GetNews();
     }
 
@@ -312,30 +300,30 @@
 
         //Запрос на добавление новости
         document.getElementById('news_save').onclick = function(){
-        	if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+            if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
                 document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length > 0
-                && document.getElementById("localdateEnd").value.length > 0 && document.getElementById("localdateStart").value < document.getElementById("localdateEnd").value){
+                && document.getElementById("localdateEnd").value.length > 0){
                 let start = new Date(document.getElementById('localdateStart').value);
                 let end = new Date(document.getElementById('localdateEnd').value);
                 console.log(localStorage.getItem('houseKeeperToken'))
-            const temp_body =
-                {
-                    chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
-                    needed_value: parseFloat(document.getElementById("fund_needed").value),
-                    recommended_value: parseFloat(document.getElementById("fund_recomended").value),
-                    fundraising_text: document.getElementById("news_body").value,
-                    time_start:start,
-                    time_end:end,
-                    current_value: 0
-                };
-            
-            console.log(temp_body);
-			document.getElementById('errorMessage').hidden = true;
-            AddNews(temp_body);
-            CloseDialogWindow();
-        }else{
-        	document.getElementById('errorMessage').hidden = false;
-        }
+                const temp_body =
+                    {
+                        chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
+                        needed_value: parseFloat(document.getElementById("fund_needed").value),
+                        recommended_value: parseFloat(document.getElementById("fund_recomended").value),
+                        fundraising_text: document.getElementById("news_body").value,
+                        time_start:start,
+                        time_end:end,
+                        current_value: 0
+                    };
+
+                console.log(temp_body);
+                document.getElementById('errorMessage').hidden = true;
+                AddNews(temp_body);
+                CloseDialogWindow();
+            }else{
+                document.getElementById('errorMessage').hidden = false;
+            }
 
         };
         document.getElementById('news_editor').hidden = false;
@@ -430,7 +418,7 @@
 
     function FillNews(){
 
-        
+
         //отображаем оглавление таблицы
         NewsTableHeader();
 
@@ -545,7 +533,7 @@
             };
 
             // Вывод локации и номер дома
-           pel1.innerHTML = data.fundraisings[key]['chat_id'];
+            pel1.innerHTML = data.fundraisings[key]['chat_id'];
             // Проверка на наличие подьезда
             pel2.innerHTML = data.fundraisings[key]['fundraising_id']
             pel3.innerHTML = (data.fundraisings[key]['fundraising_text'].length > 50) ? data.fundraisings[key]['fundraising_text'].substr(0,50) + "..." : data.fundraisings[key]['fundraising_text'];
@@ -571,57 +559,60 @@
     }
 
     function EditNews() {
-
-        document.getElementById('news_id').innerHTML = "ID збору: " + oneNewsData.fundraisings.fundraising_id;
-        document.getElementById('news_id').name = oneNewsData.fundraisings.fundraising_id;
-        document.getElementById('news_body').value = oneNewsData.fundraisings.fundraising_text;
-        document.getElementById('news_house').innerHTML = "ID чату: " + oneNewsData.news.house_number;
-        document.getElementById('fund_needed').value = oneNewsData.fundraisings.needed_value;
-        document.getElementById('fund_recomended').value = oneNewsData.fundraisings.recommended_value;
+        console.log(oneNewsData.fundraising.date_start + "a");
+        document.getElementById('news_id').innerHTML = "ID збору: " + oneNewsData.fundraising.fundraising_id;
+        document.getElementById('news_id').name = oneNewsData.fundraising.fundraising_id;
+        document.getElementById('news_body').value = oneNewsData.fundraising.fundraising_text;
+        document.getElementById('news_house').innerHTML = "ID чату: " + oneNewsData.fundraising.chat_id;
+        document.getElementById('fund_needed').value = oneNewsData.fundraising.needed_value;
+        document.getElementById('fund_recomended').value = oneNewsData.fundraising.recommended_value;
         document.getElementById('localdateStart').type = "text";
         document.getElementById('localdateEnd').type = "text";
         document.getElementById('dialogTitle').innerHTML = "Редагування збору";
-        let d = new Date(oneNewsData.news.date_start);
+        let d = new Date(oneNewsData.fundraising.time_start);
         var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
         document.getElementById('localdateStart').value = datestring;
 
-        d= new Date(oneNewsData.news.date_end);
+        d= new Date(oneNewsData.fundraising.time_end);
         datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
-        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+            d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
         document.getElementById('localdateEnd').value = datestring;
         //Учитываем картинки
-
+        document.getElementById('localdateStart').type = "text";
+        document.getElementById('localdateEnd').type = "text";
 
 
         // Функция для обновления новости при нажатии на кнопку Сохранить
         document.getElementById('news_save').onclick = async function () {
-        	if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
-                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length > 0
-                && document.getElementById("localdateEnd").value.length > 0 && document.getElementById("localdateStart").value < document.getElementById("localdateEnd").value){
-            //Отправляем новые данные на сервер
-            const temp_body =
-                {
-                    title: document.getElementById('news_title').value,
-                    text: document.getElementById('news_body').value
-                };
-            // Берем ссылки на картинки
-            var temp_obj = [];
-            divs = document.getElementById(imageNeededParams.carouselBodyId).children;
-            for (i = 0; i < divs.length; i++) {
-                temp_obj[i] = divs[i].children[0].src;
+            console.log(document.getElementById("localdateStart").value.length+"len");
+            document.getElementById("localdateEnd").type = "text";
+            document.getElementById("localdateStart").type = "text";
+            if(document.getElementById("news_body").value.length > 0 && document.getElementById("fund_needed").value.length > 0 &&
+                document.getElementById("fund_recomended").value.length > 0 && document.getElementById("localdateStart").value.length != 0
+                && document.getElementById("localdateEnd").value.length != 0){
+                //Отправляем новые данные на сервер
+                let start = new Date(document.getElementById('localdateStart').value);
+                let end = new Date(document.getElementById('localdateEnd').value);
+
+                const temp_body =
+                    {
+                        chat_id: parseInt(localStorage.getItem("CreateFundraisingChat_id")),
+                        needed_value: parseFloat(document.getElementById("fund_needed").value),
+                        recommended_value: parseFloat(document.getElementById("fund_recomended").value),
+                        fundraising_text: document.getElementById("news_body").value,
+                        time_start:start,
+                        time_end:end
+                    };
+                console.log("temmpmpmp");
+                console.log(temp_body);
+                document.getElementById('errorMessage').hidden = true;
+                await UpdateNews(oneNewsData.fundraising.fundraising_id, temp_body);
+
+                CloseDialogWindow();
+            } else{
+                document.getElementById('errorMessage').hidden = false;
             }
-            temp_body.images = temp_obj;
-
-            console.log("temmpmpmp");
-            console.log(temp_body);
-            document.getElementById('errorMessage').hidden = true;
-            await UpdateNews(oneNewsData.news.news_id, temp_body);
-
-            CloseDialogWindow();
-        } else{
-        	document.getElementById('errorMessage').hidden = false;
-        }
         };
 
         //отображаем текущюю информацию о новости
