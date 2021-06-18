@@ -152,7 +152,7 @@ function SelectHouses(isHouseKeeper,modalWindowParams, localStorageParams, ShowM
         houseName.style.textAlign = "left";
         houseName.style.paddingTop = (parseInt(houseElement.style.height) / 3 ) + "px";
         houseName.style.alignSelf = "center";
-        houseName.innerHTML = housesData.houses[k].house_number;
+        houseName.innerHTML = housesData.houses[k].house_location + ' ' + housesData.houses[k].house_number;
 
         houseElement.appendChild(houseName);
         houseContainer.appendChild(houseElement);
@@ -206,7 +206,7 @@ function SelectPorches(modalWindowParams, localStorageParams, ShowModalFunction 
     //добавляем кнопку для создания новости
     var porchCreateButton = document.createElement("button");
     porchCreateButton.id = "porchCreateButton";
-    porchCreateButton.innerHTML = "Додати новину до " + localStorage.getItem(localStorageParams.HouseName);
+    porchCreateButton.innerHTML = "Додати новину до дому" ;
     porchCreateButton.className = "btn btnAdd mb-4 ";
     porchCreateButton.style.fontSize = "20px";
     porchCreateButton.onclick = function()
@@ -258,7 +258,7 @@ function SelectPorches(modalWindowParams, localStorageParams, ShowModalFunction 
         porchName.style.textAlign = "left";
         porchName.style.paddingTop = (parseInt(porchElement.style.height) / 3 ) + "px";
         porchName.style.alignSelf = "center";
-        porchName.innerHTML = porchesData.porches[k].porch_name;
+        porchName.innerHTML = "Під'їзд " + porchesData.porches[k].porch_name;
 
         porchElement.appendChild(porchName);
         porchDivsContainer.appendChild(porchElement);
