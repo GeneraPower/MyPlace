@@ -1,0 +1,22 @@
+{
+  "name": "myplace",
+  "version": "1.0.0",
+  "description": "MyPlace web aplication for PrP course",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeneraPower/MyPlace.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GeneraPower/MyPlace/issues"
+  },
+  "homepage": "https://github.com/GeneraPower/MyPlace#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
